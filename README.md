@@ -7,7 +7,8 @@ The repo is documentation-first. It is meant to help shape the product direction
 ## Contents
 
 - `SPEC.md`: the main UI/UX design specification for the refactor.
-- `references/`: compiled snapshots from related userscript managers and supporting notes for comparison.
+- `design/`: detailed per-page implementation specifications derived from `SPEC.md` (popup, manager, editor, install/confirm, import/export/update flows, settings, logs).
+- `references/`: compiled snapshots from related userscript managers, UX analyses of each, and supporting notes for comparison.
 - `draft/`: exploratory visual material, if present.
 
 ## How To Use This Repo

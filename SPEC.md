@@ -1,6 +1,8 @@
-# ScriptCat UI/UX Refactor Design Specification (rev. 2)
+# ScriptCat UI/UX Refactor Design Specification (rev. 3)
 
 > rev. 2 adds layout foundations (6), install/update/import flows (13), first-run state (15.3), motion (16), localization (20), toast guidelines (26.6), and measurable accessibility targets (17). Later sections are renumbered accordingly.
+>
+> rev. 3 incorporates findings from the reference analyses (`references/UX_ANALYSIS_*.md`): background/scheduled scripts in the popup hierarchy, icon badge count, group counts, per-surface asset budgets, restorable deletion, on-demand locale loading, and a desktop density toggle. Detailed per-page implementation specifications live under `design/`.
 
 # 1. Purpose
 
@@ -141,6 +143,10 @@ Scripts Running on This Page
   - Runtime status
   - Quick actions
 
+Background and Scheduled Scripts
+  - Run / stop controls
+  - Next run time for scheduled scripts
+
 Other Scripts
   - Collapsed by default or shown with lower priority
 
@@ -152,6 +158,8 @@ Footer
 ### DO
 
 * Make current-page scripts the first visible section.
+* Show background and scheduled scripts as their own labeled section; they are a ScriptCat differentiator.
+* Show the number of scripts running on the current page on the extension icon badge.
 * Use strong visual distinction between current-page scripts and all installed scripts.
 * Show errors and warnings clearly.
 * Provide one-click enable/disable for scripts.
@@ -345,6 +353,7 @@ Popup maximum height: about 600 px, then scroll internally
 * Keep row heights and card paddings consistent within a view.
 * Keep the popup width fixed so content does not reflow when toggling scripts.
 * Let long lists scroll inside the popup instead of growing the popup.
+* Budget assets per surface; the popup must not load the full product stylesheet or editor bundles.
 
 ### DON'T
 
@@ -953,7 +962,7 @@ Destructive actions include:
 * Use red styling.
 * Require confirmation.
 * Explain what will be deleted.
-* Offer undo when technically possible.
+* Keep deleted scripts restorable for a grace period, with undo offered in the confirmation toast.
 * Separate destructive actions from normal actions.
 
 ### DON'T
@@ -1008,6 +1017,7 @@ ScriptCat serves a multilingual audience. Layouts must survive translation.
 * Use locale-aware date, time, and number formatting.
 * Verify both CJK and Latin rendering on every surface, including the editor UI.
 * Keep translated terminology consistent with the terms defined in this specification.
+* Load locale data on demand instead of bundling all languages into every surface.
 
 ### DON'T
 
@@ -1048,7 +1058,7 @@ When many scripts exist, the popup must remain usable.
 
 ### DO
 
-* Group scripts.
+* Group scripts and show counts on group headers.
 * Collapse inactive groups.
 * Provide search.
 * Show “View all in manager” when the list is long.
@@ -1067,6 +1077,7 @@ When many scripts exist, the popup must remain usable.
 ### DO
 
 * Use table layout for dense management.
+* Offer a comfortable/compact density toggle and remember the choice.
 * Support sorting by name, status, update time, type, and enabled state.
 * Support keyboard shortcuts.
 * Support multi-select.
