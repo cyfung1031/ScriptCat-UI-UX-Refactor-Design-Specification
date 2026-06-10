@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>ScriptCat rev.4 — Settings</title>
+<link rel="stylesheet" href="sc.css">
+<style>
+  .set { width: 1000px; display: flex; min-height: 680px; }
+  .anchor { width: 150px; flex: none; padding: 16px 8px; border-right: 1px solid var(--bd); }
+  .anchor div { padding: 7px 12px; font-size: 13px; color: var(--t2); border-radius: 4px; }
+  .anchor .on { color: var(--p); font-weight: 600; background: color-mix(in srgb, var(--p) 10%, transparent); }
+  .set-col { flex: 1; padding: 16px 24px; display: flex; flex-direction: column; gap: 16px; max-width: 688px; }
+  .gcard { border: 1px solid var(--bd); border-radius: 8px; }
+  .gcard h3 { font-size: 14px; font-weight: 600; padding: 12px 16px; border-bottom: 1px solid var(--bd); }
+  .item { display: flex; align-items: flex-start; gap: 12px; padding: 12px 16px; border-bottom: 1px solid var(--bd); }
+  .item:last-child { border-bottom: none; }
+  .item .lab { flex: 1; }
+  .item .lab b { font-size: 14px; font-weight: 500; }
+  .item .help { font-size: 12px; color: var(--t2); margin-top: 2px; max-width: 420px; }
+  .sel-ctl { font-size: 13px; border: 1px solid var(--bd); border-radius: 4px; padding: 5px 10px; color: var(--t1); white-space: nowrap; }
+  .seg { display: inline-flex; border: 1px solid var(--bd); border-radius: 4px; overflow: hidden; font-size: 12px; }
+  .seg span { padding: 4px 10px; color: var(--t2); }
+  .seg .on { background: color-mix(in srgb, var(--p) 12%, transparent); color: var(--p); font-weight: 600; }
+  .danger-card { border: 1px solid color-mix(in srgb, var(--err) 50%, transparent); border-radius: 8px; }
+  .danger-card h3 { color: var(--err); font-size: 14px; font-weight: 600; padding: 12px 16px; border-bottom: 1px solid var(--bd); }
+  .saved { font-size: 12px; color: var(--ok); }
+  .search { display: flex; align-items: center; gap: 8px; width: 240px; height: 32px; padding: 0 10px; border: 1px solid var(--bd); border-radius: 4px; color: var(--t2); font-size: 13px; }
+</style>
+</head>
+<body>
+<div class="board-title">Settings</div>
+<div class="board-sub">Per <code>design/SETTINGS.md</code> · SPEC §10. Anchor nav + one scrolling column of group cards + live search. New in rev. 4: <b>Privacy &amp; activity</b> — the ledger/history contract stated where it can be controlled. <a class="back" href="index.html">← All boards</a></div>
+
+<div class="board">
+  <div class="frame-wrap t-light">
+    <div class="frame-label">Desktop — Privacy &amp; activity group in view (Light)</div>
+    <div class="surface set">
+      <div class="anchor">
+        <div>General</div>
+        <div>Updates</div>
+        <div>Sync</div>
+        <div>Editor</div>
+        <div class="on">Privacy</div>
+        <div>Advanced</div>
+      </div>
+      <div class="set-col">
+        <div style="display:flex;align-items:center;gap:12px">
+          <b style="font-size:16px">Settings</b>
+          <span style="flex:1"></span>
+          <div class="search">🔍 Search settings… <span style="flex:1"></span><span style="font-size:11px;border:1px solid var(--bd);border-radius:4px;padding:0 5px">/</span></div>
+        </div>
+
+        <div class="gcard">
+          <h3>Updates</h3>
+          <div class="item">
+            <div class="lab"><b>Auto-apply updates without new permissions</b>
+              <div class="help">Updates that request new access always wait for your review. Every update can be rolled back from the script's Versions tab.</div>
+            </div>
+            <span class="sw on"></span>
+          </div>
+          <div class="item">
+            <div class="lab"><b>Check frequency</b></div>
+            <span class="sel-ctl">Every 12 hours ▾</span>
+          </div>
+        </div>
+
+        <div class="gcard" style="outline:2px solid var(--p);outline-offset:2px">
+          <h3>Privacy &amp; activity <span class="saved" style="float:right;font-weight:400">Saved ✓</span></h3>
+          <div class="item">
+            <div class="lab"><b>Record script activity</b>
+              <div class="help">Counts and domains only — never page content, request data, or stored values. Kept on this device, never synced.</div>
+            </div>
+            <span class="sw on"></span>
+          </div>
+          <div class="item">
+            <div class="lab"><b>Activity retention</b></div>
+            <div class="seg"><span>1 day</span><span class="on">7 days</span><span>30 days</span></div>
+          </div>
+          <div class="item">
+            <div class="lab"><b>Version history</b>
+              <div class="help">Currently using 4.6 MB for 31 scripts.</div>
+            </div>
+            <span class="sel-ctl">20 versions / 90 days ▾</span>
+          </div>
+          <div class="item">
+            <div class="lab"><b>Trash retention</b>
+              <div class="help">Deleted scripts stay restorable. Open History &amp; Trash →</div>
+            </div>
+            <span class="sel-ctl">30 days ▾</span>
+          </div>
+          <div class="item">
+            <div class="lab"><b>Site blacklist</b>
+              <div class="help">Scripts never run on matching sites. 2 patterns.</div>
+            </div>
+            <span class="btn btn-ghost btn-sm">Edit patterns</span>
+          </div>
+          <div class="item">
+            <div class="lab"><b>What can scripts access?</b></div>
+            <span class="btn btn-text btn-sm">Documentation →</span>
+          </div>
+        </div>
+
+        <div class="gcard">
+          <h3>Advanced <span class="t2" style="float:right;font-weight:400;font-size:12px">▸ 6 items</span></h3>
+        </div>
+
+        <div class="danger-card">
+          <h3>Danger zone</h3>
+          <div class="item">
+            <div class="lab"><b>Clear all logs &amp; activity</b><div class="help">Removes console logs and the activity ledger. Cannot be undone.</div></div>
+            <span class="btn btn-dgr btn-sm">Clear…</span>
+          </div>
+          <div class="item">
+            <div class="lab"><b>Delete all scripts &amp; data</b><div class="help">Requires typing DELETE. Bypasses Trash — genuinely irreversible.</div></div>
+            <span class="btn btn-dgr btn-sm">Delete all…</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="frame-wrap t-dark">
+    <div class="frame-label">Sync error state (Dark) — error renders on the card, with Fix jump</div>
+    <div class="surface" style="width:560px">
+      <div class="gcard" style="border:none">
+        <h3>Sync</h3>
+        <div class="banner bn-warn" style="margin:0 16px;border-radius:6px">⚠ WebDAV: 401 Unauthorized — check credentials <span style="flex:1"></span><span class="btn btn-ghost btn-sm">Fix</span></div>
+        <div class="item">
+          <div class="lab"><b>Backend</b></div>
+          <span class="sel-ctl">WebDAV ▾</span>
+        </div>
+        <div class="item">
+          <div class="lab"><b>Server URL</b><div class="help mono" style="font-size:12px">https://dav.example.com/scriptcat/</div></div>
+          <span class="btn btn-ghost btn-sm">Test connection</span>
+        </div>
+        <div class="item">
+          <div class="lab"><b>Status</b><div class="help">Last synced today 09:14 · 31 scripts. Activity data is never synced.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

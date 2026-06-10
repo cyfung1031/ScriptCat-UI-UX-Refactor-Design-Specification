@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>ScriptCat rev.4 — Import / Export / Batch Update</title>
+<link rel="stylesheet" href="sc.css">
+<style>
+  .flow { width: 720px; }
+  .flow-head { padding: 18px 24px 10px; font-size: 16px; font-weight: 600; }
+  .flow-sub { padding: 0 24px 12px; font-size: 13px; color: var(--t2); }
+  table.ftbl { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .ftbl th { font-size: 12px; font-weight: 500; color: var(--t2); text-align: left; padding: 6px 12px; border-bottom: 1px solid var(--bd); }
+  .ftbl td { padding: 8px 12px; border-bottom: 1px solid var(--bd); vertical-align: middle; }
+  .cb { width: 14px; height: 14px; border: 1.5px solid var(--bd); border-radius: 3px; display: inline-block; vertical-align: middle; }
+  .cb.on { background: var(--p); border-color: var(--p); position: relative; }
+  .cb.on::after { content: "✓"; color: #fff; font-size: 10px; position: absolute; top: -2px; left: 1.5px; }
+  .flow-foot { display: flex; align-items: center; gap: 10px; padding: 14px 24px; }
+  .mini-seg { display: inline-flex; border: 1px solid var(--bd); border-radius: 4px; overflow: hidden; font-size: 11px; }
+  .mini-seg span { padding: 2px 8px; color: var(--t2); border-right: 1px solid var(--bd); }
+  .mini-seg span:last-child { border-right: none; }
+  .mini-seg .on { background: color-mix(in srgb, var(--p) 12%, transparent); color: var(--p); font-weight: 600; }
+  .prog { height: 6px; border-radius: 3px; background: var(--bg3); overflow: hidden; }
+  .prog i { display: block; height: 100%; width: 62%; background: var(--p); }
+  .sumline { display: flex; align-items: center; gap: 8px; padding: 6px 24px; font-size: 13px; }
+</style>
+</head>
+<body>
+<div class="board-title">Flows — Import · Export · Batch Update</div>
+<div class="board-sub">Per <code>design/FLOWS_IMPORT_EXPORT_UPDATE.md</code> · SPEC §8.3. Preview → explicit apply → honest summary. Overwrites record versions; escalating updates are excluded from one-click bulk. <a class="back" href="index.html">← All boards</a></div>
+
+<div class="board">
+
+  <!-- ============ FRAME 1: Import preview ============ -->
+  <div class="frame-wrap t-light">
+    <div class="frame-label">1 · Import — Step 2 preview (conflicts default to Skip)</div>
+    <div class="surface flow">
+      <div class="flow-head">Import from scriptcat-backup-2026-06-01.zip</div>
+      <div class="flow-sub">37 items found · conflicts never overwrite silently; overwriting keeps the current version in history</div>
+      <table class="ftbl">
+        <tr><th style="width:36px"><span class="cb on"></span></th><th>Name</th><th style="width:70px">Version</th><th style="width:110px">Status</th><th style="width:190px">Action</th></tr>
+        <tr><td><span class="cb on"></span></td><td>Bilibili Evolved</td><td class="t2">2.1.0</td><td><span class="badge b-info">New</span></td><td class="t2">Import</td></tr>
+        <tr><td><span class="cb on"></span></td><td>AdGuard Extra <span class="t2" style="font-size:11px">— installed: 1.0.3 · backup: 1.0.1 ▾</span></td><td class="t2">1.0.1</td><td><span class="badge b-warn">Conflict</span></td><td><span class="mini-seg"><span class="on">Skip</span><span>Overwrite</span><span>Keep both</span></span></td></tr>
+        <tr><td><span class="cb on"></span></td><td>AutoPagerize</td><td class="t2">0.9.2</td><td><span class="badge b-warn">Conflict</span></td><td><span class="mini-seg"><span>Skip</span><span class="on">Overwrite</span><span>Keep both</span></span></td></tr>
+        <tr><td><span class="cb"></span></td><td class="t2">broken.user.js <span style="font-size:11px;color:var(--err)">— missing metadata block</span></td><td class="t2">—</td><td><span class="badge b-err">Invalid ⚠</span></td><td class="t2">—</td></tr>
+      </table>
+      <div class="sumline" style="padding-top:12px">
+        <span class="cb on"></span><span style="font-size:13px">Include script storage data <span class="t2">(2 scripts contain stored data)</span></span>
+      </div>
+      <div class="sumline">
+        <span class="t2">Apply to all conflicts:</span>
+        <span class="mini-seg"><span>Skip</span><span>Overwrite</span><span>Keep both</span></span>
+      </div>
+      <div class="flow-foot">
+        <span style="flex:1"></span>
+        <span class="btn btn-ghost">Cancel</span>
+        <span class="btn btn-pri">Import 35 items</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ FRAME 2: Import progress + summary ============ -->
+  <div class="frame-wrap t-light">
+    <div class="frame-label">2 · Import — Step 3 progress &amp; honest summary</div>
+    <div class="surface flow">
+      <div class="flow-head" style="font-size:14px">Importing… 22 / 35</div>
+      <div style="padding:0 24px 16px"><div class="prog"><i></i></div></div>
+      <div class="flow-foot" style="padding-top:0"><span style="flex:1"></span><span class="btn btn-ghost btn-sm">Cancel remaining</span></div>
+      <div class="sep"></div>
+      <div class="flow-head" style="font-size:14px">Import finished</div>
+      <div class="sumline"><span style="color:var(--ok)">✓</span> 32 imported</div>
+      <div class="sumline"><span class="t2">→</span> 3 skipped (conflicts kept existing)</div>
+      <div class="sumline"><span style="color:var(--err)">✕</span> 2 failed ▾ <span class="t2" style="font-size:12px">— network error fetching @require</span></div>
+      <div class="flow-foot">
+        <span style="flex:1"></span>
+        <span class="btn btn-ghost">Retry failed</span>
+        <span class="btn btn-pri">Done</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ FRAME 3: Batch update review ============ -->
+  <div class="frame-wrap t-light">
+    <div class="frame-label">3 · Batch update review — escalation verdict up front (SPEC §8.2)</div>
+    <div class="surface flow">
+      <div class="flow-head">Updates available (4)</div>
+      <table class="ftbl">
+        <tr><td style="width:36px"><span class="cb on"></span></td><td><b>AutoPagerize</b> <span class="t2 mono" style="font-size:12px">0.9.2 → 0.9.3</span></td><td><span style="color:var(--ok);font-size:12px">✓ No new permissions</span></td><td style="width:130px"><span class="btn btn-text btn-sm">View changes</span></td></tr>
+        <tr><td><span class="cb on"></span></td><td><b>Bilibili Evolved</b> <span class="t2 mono" style="font-size:12px">2.1.4 → 2.1.5</span></td><td><span style="color:var(--ok);font-size:12px">✓ No new permissions</span></td><td><span class="btn btn-text btn-sm">View changes</span></td></tr>
+        <tr><td><span class="cb on"></span></td><td><b>Gist Raw Links</b> <span class="t2 mono" style="font-size:12px">1.2 → 1.3</span></td><td><span style="color:var(--ok);font-size:12px">✓ No new permissions</span></td><td><span class="btn btn-text btn-sm">View changes</span></td></tr>
+        <tr style="background:color-mix(in srgb,var(--warn) 6%,transparent)"><td><span class="cb" style="opacity:.4"></span></td><td><b>GitHub Dark Mode</b> <span class="t2 mono" style="font-size:12px">1.4.2 → 1.5.0</span></td><td><span style="color:var(--warn);font-size:12px">⚠ New: runs on *.bank.com</span></td><td><span class="btn btn-ghost btn-sm" style="border-color:var(--warn);color:var(--warn)">Review required</span></td></tr>
+      </table>
+      <div class="flow-foot">
+        <span class="t2" style="font-size:12px">Each update records a version — roll back anytime.</span>
+        <span style="flex:1"></span>
+        <span class="btn btn-ghost">Later</span>
+        <span class="btn btn-pri">Update 3 scripts</span>
+      </div>
+      <div class="sep"></div>
+      <div class="sumline" style="padding:12px 24px"><span style="color:var(--ok)">✓</span> 3 updated · <span class="badge b-warn">1 awaiting review</span> · 0 failed <span style="flex:1"></span><span class="toast" style="padding:6px 12px;font-size:12px">AutoPagerize updated to 0.9.3 <span class="undo">Roll back</span></span></div>
+    </div>
+  </div>
+
+  <!-- ============ FRAME 4: Export dialog ============ -->
+  <div class="frame-wrap t-light">
+    <div class="frame-label">4 · Export — one dialog, privacy colocated</div>
+    <div class="surface" style="width:520px">
+      <div class="flow-head">Export scripts</div>
+      <div style="padding:0 24px">
+        <div class="sumline" style="padding:6px 0"><span class="cb on"></span> Bilibili Evolved</div>
+        <div class="sumline" style="padding:6px 0"><span class="cb on"></span> AutoPagerize</div>
+        <div class="sumline" style="padding:6px 0"><span class="cb on"></span> GitHub Dark Mode</div>
+        <div class="sumline" style="padding:6px 0"><span class="cb"></span> <span class="t2">Daily Backup to WebDAV</span></div>
+        <div class="sep" style="margin:10px 0"></div>
+        <div class="sumline" style="padding:6px 0"><span class="cb"></span> Include script storage data <span class="t2" style="font-size:12px">— may contain data from sites you visit</span></div>
+        <div class="sumline" style="padding:6px 0"><span class="cb on"></span> Include settings</div>
+        <div class="t2" style="font-size:12px;padding:6px 0">Format: zip backup · Looking for rollback instead? See History &amp; Trash.</div>
+      </div>
+      <div class="flow-foot">
+        <span style="flex:1"></span>
+        <span class="btn btn-ghost">Cancel</span>
+        <span class="btn btn-pri">Export 3 scripts</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

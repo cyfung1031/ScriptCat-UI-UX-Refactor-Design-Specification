@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>ScriptCat rev.4 — Illustration Drafts</title>
+<link rel="stylesheet" href="sc.css">
+<style>
+  .toc { display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 16px; max-width: 1100px; }
+  .toc a { text-decoration: none; color: inherit; }
+  .tcard { background: #fff; border: 1px solid #e5e6eb; border-radius: 8px; padding: 16px 18px; height: 100%; }
+  .tcard:hover { border-color: #165dff; box-shadow: 0 2px 10px rgba(22,93,255,.12); }
+  .tcard b { font-size: 15px; }
+  .tcard .spec { font-size: 11px; color: #165dff; font-weight: 600; }
+  .tcard p { font-size: 12.5px; color: #4e5969; margin-top: 6px; }
+  .legend { background: #fff; border: 1px solid #e5e6eb; border-radius: 8px; padding: 16px 18px; max-width: 1100px; margin-top: 24px; font-size: 13px; color: #4e5969; }
+  .legend b { color: #1d2129; }
+  .swatch { display: inline-block; width: 12px; height: 12px; border-radius: 3px; vertical-align: -1px; margin-right: 4px; }
+</style>
+</head>
+<body>
+<div class="board-title">ScriptCat UI/UX Refactor — HTML Illustration Drafts (rev. 4)</div>
+<div class="board-sub">Static visualizations of <code>SPEC.md</code> rev. 4 and the <code>design/</code> implementation specs, with realistic dummy data. Each board shows key states in light and dark themes using the shared token sheet (<code>sc.css</code>). These are illustrations, not the implementation: dimensions follow the specs' defaults; interactivity is depicted, not wired.</div>
+
+<div class="toc">
+  <a href="popup.html"><div class="tcard">
+    <div class="spec">design/POPUP.md · SPEC §5</div>
+    <b>Popup — Site Controller</b>
+    <p>Default light/dark · per-site switch · contextual banners · many-scripts with search · site-off · first-run · row/header menus · delete toast.</p>
+  </div></a>
+  <a href="manager.html"><div class="tcard">
+    <div class="spec">design/MANAGER.md · SPEC §6</div>
+    <b>Manager — Script Collection</b>
+    <p>Desktop by-script table · by-site view with origin switches · batch bar (dark) · History &amp; Trash · command palette ⌘K · mobile cards + bottom nav.</p>
+  </div></a>
+  <a href="script-hub.html"><div class="tcard">
+    <div class="spec">design/SCRIPT_HUB.md · SPEC §7</div>
+    <b>Script Hub — Detail Home + Editor</b>
+    <p>Overview (status, where-it-runs, activity summary) · Code with problems strip + docked console (dark) · Activity ledger · Versions with diff &amp; restore · mobile hub with console sheet.</p>
+  </div></a>
+  <a href="install.html"><div class="tcard">
+    <div class="spec">design/INSTALL_CONFIRM.md · SPEC §8</div>
+    <b>Trust — Install / Update</b>
+    <p>Install confirmation with plain-language scope card · update mode with escalation call-outs and “Update and allow new access” · runtime consent dialog · success / invalid states.</p>
+  </div></a>
+  <a href="flows.html"><div class="tcard">
+    <div class="spec">design/FLOWS_IMPORT_EXPORT_UPDATE.md · SPEC §8.3</div>
+    <b>Flows — Import / Export / Batch Update</b>
+    <p>Import preview with conflict resolution · progress + honest summary · batch update review with escalation verdicts · export dialog with colocated privacy note.</p>
+  </div></a>
+  <a href="settings.html"><div class="tcard">
+    <div class="spec">design/SETTINGS.md · SPEC §10</div>
+    <b>Settings</b>
+    <p>Anchor nav + group cards + search · Updates contract · Privacy &amp; activity group (ledger, retention, history) · danger zone · sync error state (dark).</p>
+  </div></a>
+  <a href="logs.html"><div class="tcard">
+    <div class="spec">design/LOGS.md · SPEC §9</div>
+    <b>Logs</b>
+    <p>Filter chips + counts · paused tail pill · collapsed repeats · detail panel with open-at-line and run-id → Activity link · retention footer · empty state.</p>
+  </div></a>
+</div>
+
+<div class="legend">
+  <b>Shared tokens (SPEC §11, design/README.md)</b> — primary <span class="swatch" style="background:#165dff"></span>#165DFF · success <span class="swatch" style="background:#00b42a"></span>#00B42A · warning <span class="swatch" style="background:#ff7d00"></span>#FF7D00 · danger <span class="swatch" style="background:#f53f3f"></span>#F53F3F · kind accent <span class="swatch" style="background:#722ed1"></span>#722ED1 · dark surfaces from #17171A (never pure black). Type 14/12/16 px + 13 px mono · radius 8/4/full · spacing on a 4 px grid.<br><br>
+  <b>Status grammar everywhere (SPEC §3.2)</b> — one switch (state Off) · one state word (<span style="color:#00b42a;font-weight:600">Running</span> / Idle / Idle · 14:00) · at most one attention badge (Error / Warning / Update waiting). No bare dots, no badge stacks.
+</div>
+</body>
+</html>

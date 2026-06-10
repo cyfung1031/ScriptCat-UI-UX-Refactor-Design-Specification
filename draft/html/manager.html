@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>ScriptCat rev.4 — Manager</title>
+<link rel="stylesheet" href="sc.css">
+<style>
+  .mgr { width: 1180px; display: flex; min-height: 620px; }
+  .mgr-main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+  .mgr-head { display: flex; align-items: center; gap: 10px; height: 56px; padding: 0 20px; }
+  .mgr-title { font-size: 16px; font-weight: 600; }
+  .kbd { font-size: 11px; border: 1px solid var(--bd); border-radius: 4px; padding: 1px 6px; color: var(--t2); background: var(--bg2); }
+  .mgr-toolbar { display: flex; align-items: center; gap: 6px; height: 48px; padding: 0 16px; border-bottom: 1px solid var(--bd); }
+  .search { display: flex; align-items: center; gap: 8px; width: 210px; flex: none; height: 32px; padding: 0 10px; border: 1px solid var(--bd); border-radius: 4px; color: var(--t2); font-size: 13px; background: var(--bg1); white-space: nowrap; }
+  .seg { display: inline-flex; flex: none; border: 1px solid var(--bd); border-radius: 4px; overflow: hidden; font-size: 12px; }
+  .seg span { padding: 5px 12px; color: var(--t2); white-space: nowrap; }
+  .seg .on { background: color-mix(in srgb, var(--p) 12%, transparent); color: var(--p); font-weight: 600; }
+  table.tbl { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .tbl th { font-size: 12px; font-weight: 500; color: var(--t2); text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--bd); }
+  .tbl td { padding: 6px 10px; border-bottom: 1px solid var(--bd); vertical-align: middle; height: 48px; }
+  .tbl tr.hover td { background: var(--bg2); }
+  .tbl tr.selrow td { background: var(--sel); }
+  .sname { font-weight: 500; }
+  .sdesc { font-size: 12px; color: var(--t2); }
+  .tag { display: inline-block; font-size: 11px; line-height: 16px; padding: 0 6px; border-radius: 999px; background: var(--bg3); color: var(--t2); margin-left: 6px; }
+  .cb { width: 14px; height: 14px; border: 1.5px solid var(--bd); border-radius: 3px; display: inline-block; vertical-align: middle; }
+  .cb.on { background: var(--p); border-color: var(--p); position: relative; }
+  .cb.on::after { content: "✓"; color: #fff; font-size: 10px; position: absolute; top: -2px; left: 1.5px; }
+  .mgr-foot { display: flex; align-items: center; gap: 16px; height: 28px; padding: 0 20px; font-size: 12px; color: var(--t2); border-top: 1px solid var(--bd); background: var(--bg2); }
+  .batchbar { display: flex; align-items: center; gap: 8px; height: 48px; padding: 0 20px; border-bottom: 1px solid var(--bd); background: color-mix(in srgb, var(--p) 6%, var(--bg1)); }
+  .sitehead { display: flex; align-items: center; gap: 8px; height: 36px; padding: 0 16px; background: var(--bg2); border-bottom: 1px solid var(--bd); font-size: 13px; font-weight: 600; }
+  /* mobile */
+  .mob { width: 380px; height: 700px; display: flex; flex-direction: column; }
+  .mob-head { padding: 12px 16px 8px; }
+  .mob-card { border: 1px solid var(--bd); border-radius: 8px; padding: 12px 14px; margin: 0 12px 10px; }
+  .mob-nav { margin-top: auto; display: flex; border-top: 1px solid var(--bd); height: 56px; background: var(--bg1); }
+  .mob-nav div { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 11px; color: var(--t2); gap: 2px; }
+  .mob-nav .on { color: var(--p); font-weight: 600; }
+  .fab { position: absolute; right: 16px; bottom: 72px; width: 48px; height: 48px; border-radius: 50%; background: var(--p); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 22px; box-shadow: 0 4px 12px rgba(22,93,255,.4); }
+  .palette { width: 560px; }
+  .pal-row { display: flex; align-items: center; gap: 10px; padding: 9px 16px; font-size: 13px; }
+  .pal-row.sel { background: var(--sel); }
+  .pal-k { margin-left: auto; }
+</style>
+</head>
+<body>
+<div class="board-title">Manager — Script Collection</div>
+<div class="board-sub">Per <code>design/MANAGER.md</code> · SPEC §6. Sidebar · header with ⌘K + New Script · toolbar ⇄ batch bar (same height) · status footer. Status column: one state word or one attention badge — never a dot, never a stack (SPEC §3.2). <a class="back" href="index.html">← All boards</a></div>
+
+<div class="board">
+
+  <!-- ============ FRAME 1: Desktop, By-script, light ============ -->
+  <div class="frame-wrap t-light">
+    <div class="frame-label">1 · Desktop >900 px — By-script view (Light) · row 4 hovered</div>
+    <div class="surface mgr">
+      <div class="sidebar">
+        <div style="display:flex;align-items:center;gap:8px;padding:4px 12px 14px"><span class="logo">SC</span><b>ScriptCat</b></div>
+        <div class="snav active"><span class="ic">▤</span>Installed Scripts</div>
+        <div class="snav"><span class="ic">⇅</span>Subscriptions</div>
+        <div class="snav"><span class="ic">≣</span>Logs</div>
+        <div class="snav"><span class="ic">🕘</span>History &amp; Trash</div>
+        <div class="snav"><span class="ic">⚙</span>Settings</div>
+        <div style="flex:1"></div>
+        <div class="sep" style="margin:8px 4px"></div>
+        <div class="snav"><span class="ic">?</span>Help</div>
+        <div class="t2" style="font-size:11px;padding:4px 12px">v2.0.0</div>
+      </div>
+      <div class="mgr-main">
+        <div class="mgr-head">
+          <span class="mgr-title">Installed Scripts (37)</span>
+          <span style="flex:1"></span>
+          <span class="kbd">⌘K</span>
+          <span class="btn btn-pri">＋ New Script</span>
+          <span class="icon-btn">⋮</span>
+        </div>
+        <div class="mgr-toolbar">
+          <div class="search">🔍 Search scripts… <span style="flex:1"></span><span class="kbd">/</span></div>
+          <span class="chip sel">Enabled</span>
+          <span class="chip">Errors</span>
+          <span class="chip">Update waiting</span>
+          <span class="chip">Background</span>
+          <span class="chip reset">Reset</span>
+          <span style="flex:1"></span>
+          <div class="seg"><span class="on">By script</span><span>By site</span></div>
+          <span class="chip">Sort: Name ▾</span>
+          <span class="icon-btn" title="Density">≡</span>
+        </div>
+        <table class="tbl">
+          <tr><th style="width:40px"><span class="cb"></span></th><th style="width:56px"></th><th>Name</th><th style="width:130px">Status</th><th style="width:110px">Updated ▾</th><th style="width:96px"></th></tr>
+          <tr>
+            <td><span class="cb"></span></td><td><span class="sw on"></span></td>
+            <td><div class="sname">Bilibili Evolved <span class="tag">video</span><span class="tag">bilibili</span></div><div class="sdesc ell">Powerful enhancements for Bilibili: player, downloads, custom themes</div></td>
+            <td><span class="state st-run">Running</span></td><td class="t2" style="font-size:12px">2 h ago</td>
+            <td><span class="icon-btn" title="Edit">✎</span><span class="icon-btn">⋮</span></td>
+          </tr>
+          <tr>
+            <td><span class="cb"></span></td><td><span class="sw on"></span></td>
+            <td><div class="sname">AutoPagerize</div><div class="sdesc ell">Automatically loads the next page and appends it</div></td>
+            <td><span class="state st-idle">Idle</span></td><td class="t2" style="font-size:12px">3 d ago</td>
+            <td><span class="icon-btn">✎</span><span class="icon-btn">⋮</span></td>
+          </tr>
+          <tr>
+            <td><span class="cb"></span></td><td><span class="sw on"></span></td>
+            <td><div class="sname">GitHub Dark Mode <span class="tag">github</span></div><div class="sdesc ell">A comfortable dark theme for github.com and gists</div></td>
+            <td><span class="badge b-warn">Update waiting</span></td><td class="t2" style="font-size:12px">12 d ago</td>
+            <td><span class="icon-btn">✎</span><span class="icon-btn">⋮</span></td>
+          </tr>
+          <tr class="hover">
+            <td><span class="cb"></span></td><td><span class="sw on"></span></td>
+            <td><div class="sname">AdGuard Extra</div><div class="sdesc ell">Extra filtering where rules are not enough</div></td>
+            <td><span class="badge b-err">Error</span></td><td class="t2" style="font-size:12px">5 h ago</td>
+            <td><span class="icon-btn">✎</span><span class="icon-btn">⋮</span></td>
+          </tr>
+          <tr>
+            <td><span class="cb"></span></td><td><span class="sw on"></span></td>
+            <td><div class="sname">Daily Backup to WebDAV <span class="kind">⏱ Scheduled</span></div><div class="sdesc ell">Exports all scripts to WebDAV every night</div></td>
+            <td><span class="state st-idle">Idle · 02:00</span></td><td class="t2" style="font-size:12px">1 d ago</td>
+            <td><span class="icon-btn" title="Run once">▶</span><span class="icon-btn">⋮</span></td>
+          </tr>
+          <tr>
+            <td><span class="cb"></span></td><td><span class="sw on"></span></td>
+            <td><div class="sname">RSS Watcher <span class="kind">⚙ Background</span></div><div class="sdesc ell">Polls feeds and notifies on new entries</div></td>
+            <td><span class="state st-run">Running</span></td><td class="t2" style="font-size:12px">8 d ago</td>
+            <td><span class="icon-btn" title="Stop">⏹</span><span class="icon-btn">⋮</span></td>
+          </tr>
+          <tr>
+            <td><span class="cb"></span></td><td><span class="sw"></span></td>
+            <td><div class="sname t2">Weibo Image Saver</div><div class="sdesc ell">One-click original-size image download</div></td>
+            <td><span class="state st-off">Off</span></td><td class="t2" style="font-size:12px">21 d ago</td>
+            <td><span class="icon-btn">✎</span><span class="icon-btn">⋮</span></td>
+          </tr>
+        </table>
+        <div style="flex:1"></div>
+        <div class="mgr-foot">37 scripts · 34 enabled · 1 error<span style="flex:1"></span>Updates checked 2 h ago · Sync: up to date</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ FRAME 2: By-site view ============ -->
+  <div class="frame-wrap t-light">
+    <div class="frame-label">2 · By-site view (same row grammar, origin headers with per-site switch)</div>
+    <div class="surface mgr" style="min-height:0">
+      <div class="mgr-main">
+        <div class="mgr-toolbar" style="border-top:none">
+          <div class="search">🔍 Search scripts…</div>
+          <span style="flex:1"></span>
+          <div class="seg"><span>By script</span><span class="on">By site</span></div>
+          <span class="chip">Sort: Name ▾</span>
+        </div>
+        <div class="sitehead"><span class="chev">▾</span><span class="favicon" style="background:#24292f"></span> github.com <span class="sw sm on" title="Run scripts on github.com"></span><span style="flex:1"></span><span class="t2" style="font-weight:400">2 scripts</span></div>
+        <table class="tbl">
+          <tr><td style="width:40px"><span class="cb"></span></td><td style="width:56px"><span class="sw on"></span></td><td><div class="sname">GitHub Dark Mode</div></td><td style="width:130px"><span class="badge b-warn">Update waiting</span></td><td style="width:96px"><span class="icon-btn">✎</span><span class="icon-btn">⋮</span></td></tr>
+          <tr><td><span class="cb"></span></td><td><span class="sw on"></span></td><td><div class="sname">Gist Raw Links</div></td><td><span class="state st-idle">Idle</span></td><td><span class="icon-btn">✎</span><span class="icon-btn">⋮</span></td></tr>
+        </table>
+        <div class="sitehead"><span class="chev">▾</span><span class="favicon" style="background:#00a1d6"></span> bilibili.com <span class="sw sm on"></span><span style="flex:1"></span><span class="t2" style="font-weight:400">2 scripts</span></div>
+        <table class="tbl">
+          <tr><td style="width:40px"><span class="cb"></span></td><td style="width:56px"><span class="sw on"></span></td><td><div class="sname">Bilibili Evolved</div></td><td style="width:130px"><span class="state st-run">Running</span></td><td style="width:96px"><span class="icon-btn">✎</span><span class="icon-btn">⋮</span></td></tr>
+          <tr><td><span class="cb"></span></td><td><span class="sw on"></span></td><td><div class="sname">Bilibili Subtitle Downloader</div></td><td><span class="state st-run">Running</span></td><td><span class="icon-btn">✎</span><span class="icon-btn">⋮</span></td></tr>
+        </table>
+        <div class="sitehead"><span class="chev">▾</span><span style="color:var(--warn)">⚠</span> All websites <span style="flex:1"></span><span class="t2" style="font-weight:400">2 scripts</span></div>
+        <table class="tbl">
+          <tr><td style="width:40px"><span class="cb"></span></td><td style="width:56px"><span class="sw on"></span></td><td><div class="sname">AutoPagerize</div></td><td style="width:130px"><span class="state st-idle">Idle</span></td><td style="width:96px"><span class="icon-btn">✎</span><span class="icon-btn">⋮</span></td></tr>
+          <tr><td><span class="cb"></span></td><td><span class="sw on"></span></td><td><div class="sname">AdGuard Extra</div></td><td><span class="badge b-err">Error</span></td><td><span class="icon-btn">✎</span><span class="icon-btn">⋮</span></td></tr>
+        </table>
+        <div class="sitehead"><span class="chev">▸</span><span class="kind">⚙</span> Background &amp; scheduled <span style="flex:1"></span><span class="t2" style="font-weight:400">3 scripts</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ FRAME 3: Batch selection, dark ============ -->
+  <div class="frame-wrap t-dark">
+    <div class="frame-label">3 · Selection mode — batch bar replaces toolbar (Dark)</div>
+    <div class="surface mgr" style="min-height:0">
+      <div class="mgr-main">
+        <div class="batchbar">
+          <b style="font-size:13px">3 selected</b>
+          <span class="btn btn-ghost btn-sm">Enable</span>
+          <span class="btn btn-ghost btn-sm">Disable</span>
+          <span class="btn btn-ghost btn-sm">Update</span>
+          <span class="btn btn-ghost btn-sm">Export</span>
+          <span style="width:1px;height:20px;background:var(--bd);margin:0 16px"></span>
+          <span class="btn btn-dgr btn-sm">Delete</span>
+          <span style="flex:1"></span>
+          <span class="btn btn-text btn-sm">Cancel</span>
+        </div>
+        <table class="tbl">
+          <tr class="selrow"><td style="width:40px"><span class="cb on"></span></td><td style="width:56px"><span class="sw on"></span></td><td><div class="sname">Bilibili Evolved</div><div class="sdesc ell">Powerful enhancements for Bilibili</div></td><td style="width:130px"><span class="state st-run">Running</span></td><td style="width:110px" class="t2"><span style="font-size:12px">2 h ago</span></td><td style="width:96px"><span class="icon-btn">✎</span><span class="icon-btn">⋮</span></td></tr>
+          <tr class="selrow"><td><span class="cb on"></span></td><td><span class="sw on"></span></td><td><div class="sname">AutoPagerize</div><div class="sdesc ell">Automatically loads the next page</div></td><td><span class="state st-idle">Idle</span></td><td class="t2"><span style="font-size:12px">3 d ago</span></td><td><span class="icon-btn">✎</span><span class="icon-btn">⋮</span></td></tr>
+          <tr><td><span class="cb"></span></td><td><span class="sw on"></span></td><td><div class="sname">GitHub Dark Mode</div><div class="sdesc ell">A comfortable dark theme for github.com</div></td><td><span class="badge b-warn">Update waiting</span></td><td class="t2"><span style="font-size:12px">12 d ago</span></td><td><span class="icon-btn">✎</span><span class="icon-btn">⋮</span></td></tr>
+          <tr class="selrow"><td><span class="cb on"></span></td><td><span class="sw"></span></td><td><div class="sname t2">Weibo Image Saver</div><div class="sdesc ell">One-click original-size image download</div></td><td><span class="state st-off">Off</span></td><td class="t2"><span style="font-size:12px">21 d ago</span></td><td><span class="icon-btn">✎</span><span class="icon-btn">⋮</span></td></tr>
+        </table>
+        <div style="padding:16px 20px"><span class="toast">3 scripts moved to Trash <span class="undo">Undo</span></span> <span class="t2" style="font-size:12px;margin-left:10px">← after Delete (10 s, SPEC §3.4)</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ FRAME 4: History & Trash ============ -->
+  <div class="frame-wrap t-light">
+    <div class="frame-label">4 · History &amp; Trash (SPEC §6.2)</div>
+    <div class="surface" style="width:720px">
+      <div class="mgr-head"><span class="mgr-title">History &amp; Trash</span></div>
+      <div style="padding:0 20px 20px">
+        <div style="font-size:13px;font-weight:600;margin:8px 0">Trash (2)</div>
+        <div class="card">
+          <div class="row" style="height:48px;border-bottom:1px solid var(--bd)">
+            <span class="sname t2" style="flex:1">Weibo Image Saver</span>
+            <span class="t2" style="font-size:12px">Deleted today, 14:21</span>
+            <span class="btn btn-ghost btn-sm">Restore</span>
+            <span class="btn btn-dgr btn-sm">Delete permanently</span>
+          </div>
+          <div class="row" style="height:48px">
+            <span class="sname t2" style="flex:1">Old Twitter Layout</span>
+            <span class="t2" style="font-size:12px">Deleted Jun 2</span>
+            <span class="btn btn-ghost btn-sm">Restore</span>
+            <span class="btn btn-dgr btn-sm">Delete permanently</span>
+          </div>
+        </div>
+        <div style="font-size:13px;font-weight:600;margin:16px 0 8px">Recent changes</div>
+        <div class="card">
+          <div class="row" style="height:44px;border-bottom:1px solid var(--bd);font-size:13px">
+            <span class="badge b-info">Update</span><span style="flex:1">AutoPagerize 0.9.1 → 0.9.2</span>
+            <span class="t2" style="font-size:12px">2 h ago</span><span class="btn btn-text btn-sm">Roll back</span>
+          </div>
+          <div class="row" style="height:44px;border-bottom:1px solid var(--bd);font-size:13px">
+            <span class="badge b-info">Import</span><span style="flex:1">32 scripts from scriptcat-backup-2026-06-01.zip</span>
+            <span class="t2" style="font-size:12px">Jun 1</span><span class="btn btn-text btn-sm">Details</span>
+          </div>
+          <div class="row" style="height:44px;font-size:13px">
+            <span class="badge b-kind">Rollback</span><span style="flex:1">GitHub Dark Mode → restored v1.4.1</span>
+            <span class="t2" style="font-size:12px">May 28</span><span class="btn btn-text btn-sm">Versions</span>
+          </div>
+        </div>
+        <div class="t2" style="font-size:12px;margin-top:12px">Trash kept 30 days · versions kept 90 days / 20 per script — change in Settings</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ FRAME 5: Command palette ============ -->
+  <div class="frame-wrap t-light">
+    <div class="frame-label">5 · Command palette ⌘K (SPEC §3.5) — collection commands rank first</div>
+    <div class="surface palette">
+      <div class="row" style="height:44px;border-bottom:1px solid var(--bd)"><span class="t2">🔍</span><span class="t2">up</span><span style="border-left:1.5px solid var(--t1);height:16px"></span></div>
+      <div class="pal-row sel"><span>⟳</span> Check all <b>up</b>dates <span class="pal-k kbd">⌘U</span></div>
+      <div class="pal-row"><span>▤</span> Filter: <b>Up</b>date waiting</div>
+      <div class="pal-row"><span>✎</span> Open “GitHub Dark Mode” (<b>up</b>date waiting)</div>
+      <div class="pal-row"><span>⚙</span> Settings → <b>Up</b>dates</div>
+      <div class="row" style="height:32px;border-top:1px solid var(--bd);font-size:11px;color:var(--t2)">↑↓ navigate · ↵ run · esc close — every command also exists in visible UI</div>
+    </div>
+  </div>
+
+  <!-- ============ FRAME 6: Mobile ============ -->
+  <div class="frame-wrap t-light">
+    <div class="frame-label">6 · Mobile &lt;600 px — cards, bottom nav, FAB</div>
+    <div class="surface mob" style="position:relative">
+      <div class="mob-head">
+        <div style="display:flex;align-items:center;gap:8px"><span class="logo">SC</span><b style="font-size:16px">Installed Scripts</b><span class="t2">(37)</span></div>
+        <div style="display:flex;gap:6px;margin-top:10px;overflow:hidden">
+          <div class="seg"><span class="on">By script</span><span>By site</span></div>
+          <span class="chip sel">Enabled</span><span class="chip">Errors</span><span class="chip">Update</span>
+        </div>
+      </div>
+      <div style="overflow:hidden;padding-top:8px">
+        <div class="mob-card">
+          <div style="display:flex;align-items:center;gap:10px"><span class="sw on"></span><b class="ell" style="flex:1">Bilibili Evolved</b><span class="state st-run">Running</span></div>
+          <div class="sdesc" style="margin:6px 0 10px">Powerful enhancements for Bilibili: player, downloads, themes</div>
+          <div style="display:flex;gap:8px"><span class="btn btn-ghost btn-sm" style="flex:1;justify-content:center">Edit</span><span class="btn btn-ghost btn-sm" style="flex:1;justify-content:center">Run</span><span class="btn btn-ghost btn-sm" style="flex:1;justify-content:center">⋮ More</span></div>
+        </div>
+        <div class="mob-card">
+          <div style="display:flex;align-items:center;gap:10px"><span class="sw on"></span><b class="ell" style="flex:1">AdGuard Extra</b><span class="badge b-err">Error</span></div>
+          <div class="sdesc" style="margin:6px 0 10px">Extra filtering where rules are not enough</div>
+          <div style="display:flex;gap:8px"><span class="btn btn-ghost btn-sm" style="flex:1;justify-content:center">Edit</span><span class="btn btn-ghost btn-sm" style="flex:1;justify-content:center">Run</span><span class="btn btn-ghost btn-sm" style="flex:1;justify-content:center">⋮ More</span></div>
+        </div>
+        <div class="mob-card">
+          <div style="display:flex;align-items:center;gap:10px"><span class="sw on"></span><b class="ell" style="flex:1">Daily Backup to WebDAV</b><span class="state st-idle">Idle · 02:00</span></div>
+          <div class="sdesc" style="margin:6px 0 10px">Exports all scripts to WebDAV every night</div>
+          <div style="display:flex;gap:8px"><span class="btn btn-ghost btn-sm" style="flex:1;justify-content:center">Edit</span><span class="btn btn-ghost btn-sm" style="flex:1;justify-content:center">Run once</span><span class="btn btn-ghost btn-sm" style="flex:1;justify-content:center">⋮ More</span></div>
+        </div>
+      </div>
+      <div class="fab">＋</div>
+      <div class="mob-nav">
+        <div class="on"><span>▤</span>Scripts</div>
+        <div><span>≣</span>Logs</div>
+        <div><span>⚙</span>Settings</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

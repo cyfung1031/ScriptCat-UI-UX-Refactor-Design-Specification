@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>ScriptCat rev.4 — Popup (Site Controller)</title>
+<link rel="stylesheet" href="sc.css">
+<style>
+  .popup { width: 384px; font-size: 14px; }
+  .pp-header { display: flex; align-items: center; gap: 8px; height: 48px; padding: 0 12px; }
+  .pp-name { font-weight: 500; }
+  .pp-site { display: flex; align-items: center; gap: 8px; min-height: 40px; padding: 4px 12px; background: var(--bg2); border-top: 1px solid var(--bd); border-bottom: 1px solid var(--bd); }
+  .pp-row { display: flex; align-items: center; gap: 10px; min-height: 40px; padding: 2px 12px; }
+  .pp-row .name { flex: 1; min-width: 0; }
+  .errline { font-size: 12px; color: var(--err); margin: -6px 12px 6px 54px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .pp-footer { display: flex; align-items: center; gap: 8px; height: 40px; padding: 0 12px; border-top: 1px solid var(--bd); font-size: 12px; }
+  .pp-list { max-height: 360px; }
+  .chev { font-size: 10px; color: var(--t2); }
+  .pp-search { margin: 6px 12px; height: 32px; display: flex; align-items: center; gap: 8px; padding: 0 10px; border: 1px solid var(--bd); border-radius: 4px; color: var(--t2); font-size: 13px; background: var(--bg1); }
+  .menu { width: 200px; padding: 6px 0; font-size: 13px; }
+  .menu .mi { display: flex; align-items: center; gap: 8px; padding: 7px 14px; }
+  .menu .mi:hover { background: var(--bg2); }
+  .menu .mi.danger { color: var(--err); }
+  .menu .sep { margin: 6px 0; }
+  .empty { padding: 36px 24px; text-align: center; }
+</style>
+</head>
+<body>
+<div class="board-title">Popup — Site Controller</div>
+<div class="board-sub">Per <code>design/POPUP.md</code> · SPEC §5. 384 px fixed width, 600 px max height; header → site strip (per-site switch) → one banner → groups with counts → footer. One switch, one state word, at most one attention badge per row (SPEC §3.2). <a class="back" href="index.html">← All boards</a></div>
+
+<div class="board">
+
+  <!-- ============ FRAME 1: Light, default ============ -->
+  <div class="frame-wrap t-light">
+    <div class="frame-label">1 · Default — Light (bilibili.com, error + reload banner)</div>
+    <div class="popup surface">
+      <!-- Header 48px -->
+      <div class="pp-header">
+        <span class="logo">SC</span><span class="pp-name">ScriptCat</span>
+        <span style="flex:1"></span>
+        <span class="sw on" title="Enable ScriptCat"></span>
+        <span class="icon-btn">⋮</span>
+      </div>
+      <!-- Site strip 40px -->
+      <div class="pp-site">
+        <span class="favicon" style="background:#00a1d6"></span>
+        <span class="ell" style="max-width:140px">www.bilibili.com</span>
+        <span class="sw sm on" title="Run scripts on www.bilibili.com"></span>
+        <span style="flex:1"></span>
+        <span class="t2" style="font-size:12px">3 running</span>
+        <span class="badge b-err">1 error</span>
+      </div>
+      <!-- Contextual banner -->
+      <div class="banner bn-info">Reload to apply changes <span style="flex:1"></span><span class="btn btn-pri btn-sm">Reload</span></div>
+      <!-- Group 1 -->
+      <div class="pp-list">
+        <div class="ghead"><span class="chev">▾</span> Running on this page <span class="count">(3)</span></div>
+        <div class="pp-row">
+          <span class="sw on"></span>
+          <span class="name ell">Bilibili Evolved</span>
+          <span class="state st-run">Running</span>
+          <span class="icon-btn" title="Edit">✎</span><span class="icon-btn">⋮</span>
+        </div>
+        <div class="pp-row">
+          <span class="sw on"></span>
+          <span class="name ell">Bilibili Subtitle Downloader</span>
+          <span class="state st-run">Running</span>
+          <span class="icon-btn" title="Edit">✎</span><span class="icon-btn">⋮</span>
+        </div>
+        <div class="pp-row">
+          <span class="sw on"></span>
+          <span class="name ell">AdGuard Extra</span>
+          <span class="badge b-err">Error</span>
+          <span class="icon-btn" title="Edit">✎</span><span class="icon-btn">⋮</span>
+        </div>
+        <div class="errline">TypeError: Cannot read properties of undefined (reading 'querySel…</div>
+        <!-- Group 2 -->
+        <div class="ghead"><span class="chev">▾</span> Background &amp; scheduled <span class="count">(2)</span></div>
+        <div class="pp-row">
+          <span class="sw on"></span>
+          <span class="name ell">RSS Watcher</span>
+          <span class="state st-run">Running</span>
+          <span class="icon-btn" title="Stop">⏹</span><span class="icon-btn">⋮</span>
+        </div>
+        <div class="pp-row">
+          <span class="sw on"></span>
+          <span class="name ell">Daily Backup to WebDAV</span>
+          <span class="state st-idle">Idle · 02:00</span>
+          <span class="icon-btn" title="Run once">▶</span><span class="icon-btn">⋮</span>
+        </div>
+        <!-- Group 3 collapsed -->
+        <div class="ghead"><span class="chev">▸</span> Other scripts <span class="count">(24)</span></div>
+      </div>
+      <!-- Footer 40px -->
+      <div class="pp-footer">
+        <span class="t2">v2.0.0</span><span style="flex:1"></span>
+        <span style="color:var(--p)">Get scripts for this site</span>
+        <span class="btn btn-text btn-sm" style="font-weight:600">Open Manager</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ FRAME 2: Dark, default ============ -->
+  <div class="frame-wrap t-dark">
+    <div class="frame-label">2 · Default — Dark</div>
+    <div class="popup surface">
+      <div class="pp-header">
+        <span class="logo">SC</span><span class="pp-name">ScriptCat</span>
+        <span style="flex:1"></span>
+        <span class="sw on"></span><span class="icon-btn">⋮</span>
+      </div>
+      <div class="pp-site">
+        <span class="favicon" style="background:#00a1d6"></span>
+        <span class="ell" style="max-width:140px">www.bilibili.com</span>
+        <span class="sw sm on"></span>
+        <span style="flex:1"></span>
+        <span class="t2" style="font-size:12px">3 running</span>
+        <span class="badge b-err">1 error</span>
+      </div>
+      <div class="pp-list">
+        <div class="ghead"><span class="chev">▾</span> Running on this page <span class="count">(3)</span></div>
+        <div class="pp-row"><span class="sw on"></span><span class="name ell">Bilibili Evolved</span><span class="state st-run">Running</span><span class="icon-btn">✎</span><span class="icon-btn">⋮</span></div>
+        <div class="pp-row"><span class="sw on"></span><span class="name ell">Bilibili Subtitle Downloader</span><span class="state st-run">Running</span><span class="icon-btn">✎</span><span class="icon-btn">⋮</span></div>
+        <div class="pp-row"><span class="sw on"></span><span class="name ell">AdGuard Extra</span><span class="badge b-err">Error</span><span class="icon-btn">✎</span><span class="icon-btn">⋮</span></div>
+        <div class="errline">TypeError: Cannot read properties of undefined (reading 'querySel…</div>
+        <div class="ghead"><span class="chev">▾</span> Background &amp; scheduled <span class="count">(2)</span></div>
+        <div class="pp-row"><span class="sw on"></span><span class="name ell">RSS Watcher</span><span class="state st-run">Running</span><span class="icon-btn">⏹</span><span class="icon-btn">⋮</span></div>
+        <div class="pp-row"><span class="sw on"></span><span class="name ell">Daily Backup to WebDAV</span><span class="state st-idle">Idle · 02:00</span><span class="icon-btn">▶</span><span class="icon-btn">⋮</span></div>
+        <div class="ghead"><span class="chev">▸</span> Other scripts <span class="count">(24)</span></div>
+      </div>
+      <div class="pp-footer">
+        <span class="t2">v2.0.0</span><span style="flex:1"></span>
+        <span style="color:var(--p)">Get scripts for this site</span>
+        <span class="btn btn-text btn-sm" style="font-weight:600">Open Manager</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ FRAME 3: Many scripts ============ -->
+  <div class="frame-wrap t-light">
+    <div class="frame-label">3 · Many-scripts state (search pinned, virtualized, View all)</div>
+    <div class="popup surface">
+      <div class="pp-header">
+        <span class="logo">SC</span><span class="pp-name">ScriptCat</span>
+        <span style="flex:1"></span><span class="sw on"></span><span class="icon-btn">⋮</span>
+      </div>
+      <div class="pp-site">
+        <span class="favicon" style="background:#ff4500"></span>
+        <span class="ell" style="max-width:140px">www.reddit.com</span>
+        <span class="sw sm on"></span>
+        <span style="flex:1"></span><span class="t2" style="font-size:12px">2 running</span>
+      </div>
+      <div class="pp-search">🔍 <span>Search scripts…</span></div>
+      <div class="pp-list scrollhint">
+        <div class="ghead"><span class="chev">▾</span> Running on this page <span class="count">(2)</span></div>
+        <div class="pp-row"><span class="sw on"></span><span class="name ell">Reddit Enhancement Suite</span><span class="state st-run">Running</span><span class="icon-btn">✎</span><span class="icon-btn">⋮</span></div>
+        <div class="pp-row"><span class="sw on"></span><span class="name ell">Old Reddit Redirect</span><span class="state st-run">Running</span><span class="icon-btn">✎</span><span class="icon-btn">⋮</span></div>
+        <div class="ghead"><span class="chev">▾</span> Background &amp; scheduled <span class="count">(2)</span></div>
+        <div class="pp-row"><span class="sw on"></span><span class="name ell">RSS Watcher</span><span class="state st-run">Running</span><span class="icon-btn">⏹</span><span class="icon-btn">⋮</span></div>
+        <div class="pp-row"><span class="sw on"></span><span class="name ell">Daily Backup to WebDAV</span><span class="state st-idle">Idle · 02:00</span><span class="icon-btn">▶</span><span class="icon-btn">⋮</span></div>
+        <div class="ghead"><span class="chev">▾</span> Other scripts <span class="count">(38)</span></div>
+        <div class="pp-row"><span class="sw on"></span><span class="name ell t2">AutoPagerize</span><span class="state st-idle">Idle</span><span class="icon-btn">✎</span><span class="icon-btn">⋮</span></div>
+        <div class="pp-row"><span class="sw on"></span><span class="name ell t2">GitHub Dark Mode</span><span class="badge b-warn">Update waiting</span><span class="icon-btn">✎</span><span class="icon-btn">⋮</span></div>
+        <div class="pp-row"><span class="sw"></span><span class="name ell t2">Weibo Image Saver</span><span class="state st-off"></span><span class="icon-btn">✎</span><span class="icon-btn">⋮</span></div>
+        <div class="row" style="height:36px;justify-content:center"><span style="color:var(--p);font-size:13px">View all in Manager →</span></div>
+      </div>
+      <div class="pp-footer">
+        <span class="t2">v2.0.0</span><span style="flex:1"></span>
+        <span style="color:var(--p)">Get scripts for this site</span>
+        <span class="btn btn-text btn-sm" style="font-weight:600">Open Manager</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ FRAME 4: Site switched off ============ -->
+  <div class="frame-wrap t-light">
+    <div class="frame-label">4 · Per-site switch off (remembered; groups collapsed)</div>
+    <div class="popup surface">
+      <div class="pp-header">
+        <span class="logo">SC</span><span class="pp-name">ScriptCat</span>
+        <span style="flex:1"></span><span class="sw on"></span><span class="icon-btn">⋮</span>
+      </div>
+      <div class="pp-site">
+        <span class="favicon" style="background:#00a1d6"></span>
+        <span class="ell t2" style="max-width:140px">www.bilibili.com</span>
+        <span class="sw sm" title="Run scripts on www.bilibili.com"></span>
+        <span style="flex:1"></span>
+        <span class="t2" style="font-size:12px">0 running</span>
+      </div>
+      <div class="banner bn-neutral">ScriptCat is off on www.bilibili.com. <span style="flex:1"></span><span class="btn btn-ghost btn-sm">Turn back on</span></div>
+      <div class="ghead"><span class="chev">▸</span> Background &amp; scheduled <span class="count">(2)</span></div>
+      <div class="ghead"><span class="chev">▸</span> Other scripts <span class="count">(27)</span></div>
+      <div class="pp-footer">
+        <span class="t2">v2.0.0</span><span style="flex:1"></span>
+        <span style="color:var(--p)">Get scripts for this site</span>
+        <span class="btn btn-text btn-sm" style="font-weight:600">Open Manager</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ FRAME 5: First run ============ -->
+  <div class="frame-wrap t-light">
+    <div class="frame-label">5 · First run (designed empty state, SPEC §13.1)</div>
+    <div class="popup surface">
+      <div class="pp-header">
+        <span class="logo">SC</span><span class="pp-name">ScriptCat</span>
+        <span style="flex:1"></span><span class="sw on"></span><span class="icon-btn">⋮</span>
+      </div>
+      <div class="empty">
+        <div class="logo" style="width:48px;height:48px;border-radius:12px;font-size:22px;margin:0 auto 16px">SC</div>
+        <div style="margin-bottom:16px">Scripts customize the websites you visit.</div>
+        <div style="display:flex;gap:8px;justify-content:center">
+          <span class="btn btn-pri">Get scripts</span>
+          <span class="btn btn-ghost">Create script</span>
+        </div>
+      </div>
+      <div class="pp-footer">
+        <span class="t2">v2.0.0</span><span style="flex:1"></span>
+        <span class="btn btn-text btn-sm" style="font-weight:600">Open Manager</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ FRAME 6: Row ⋮ menu ============ -->
+  <div class="frame-wrap t-light">
+    <div class="frame-label">6 · Row ⋮ menu (fixed order; delete → trash, no dialog)</div>
+    <div class="surface menu">
+      <div class="mi">View activity</div>
+      <div class="mi">View logs</div>
+      <div class="mi">Check for updates</div>
+      <div class="mi">Exclude on this site</div>
+      <div class="sep"></div>
+      <div class="mi danger">Delete</div>
+    </div>
+    <div style="height:16px"></div>
+    <div class="frame-label">Header ⋮ menu</div>
+    <div class="surface menu">
+      <div class="mi">Create new script</div>
+      <div class="mi">Develop on this page</div>
+      <div class="mi">Get scripts</div>
+      <div class="sep"></div>
+      <div class="mi">Settings</div>
+    </div>
+    <div style="height:16px"></div>
+    <div class="frame-label">Delete toast (SPEC §3.4)</div>
+    <div class="toast">Moved “Weibo Image Saver” to Trash <span class="undo">Undo</span></div>
+  </div>
+
+</div>
+</body>
+</html>

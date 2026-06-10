@@ -2,6 +2,8 @@
 
 These documents translate `SPEC.md` (rev. 4) into buildable, per-page specifications. Each spec is self-contained for the implementer of that page but defers all cross-cutting rules — the two-axis model, the kind/state/attention status system, the activity ledger, reversibility, terminology, accessibility, motion — to `SPEC.md`, cited as `SPEC §n`. Where a decision came from reference-product evidence, the spec cites `references/UX_ANALYSIS_*.md`.
 
+HTML illustration boards for every surface live in `../draft/html/` (open `index.html`); each board cites the spec it visualizes.
+
 ## Documents
 
 | Surface | File | Carries rev. 4 pillar |

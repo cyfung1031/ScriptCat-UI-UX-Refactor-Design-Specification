@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>ScriptCat rev.4 — Script Hub</title>
+<link rel="stylesheet" href="sc.css">
+<style>
+  .hub { width: 1100px; display: flex; flex-direction: column; }
+  .hub-top { display: flex; align-items: center; gap: 10px; height: 48px; padding: 0 16px; }
+  .hub-tabs { display: flex; gap: 2px; height: 36px; padding: 0 16px; border-bottom: 1px solid var(--bd); font-size: 13px; }
+  .hub-tabs span { padding: 8px 12px; color: var(--t2); border-bottom: 2px solid transparent; }
+  .hub-tabs .on { color: var(--p); font-weight: 600; border-bottom-color: var(--p); }
+  .savetxt { font-size: 12px; color: var(--t2); }
+  .dirty { color: var(--warn); font-size: 16px; line-height: 1; }
+  .ov { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; padding: 16px; }
+  .ov .card { padding: 14px 16px; }
+  .ov h4 { font-size: 12px; font-weight: 600; color: var(--t2); text-transform: uppercase; letter-spacing: .04em; margin-bottom: 10px; }
+  .attn { display: flex; align-items: center; gap: 10px; padding: 8px 0; font-size: 13px; border-bottom: 1px solid var(--bd); }
+  .attn:last-child { border-bottom: none; }
+  .siterow { display: flex; align-items: center; gap: 8px; padding: 7px 0; font-size: 13px; border-bottom: 1px solid var(--bd); }
+  .siterow:last-child { border-bottom: none; }
+  /* code */
+  .code { display: flex; font-size: 13px; line-height: 1.65; }
+  .lnums { padding: 10px 8px; text-align: right; color: var(--t2); opacity: .6; user-select: none; background: var(--bg2); }
+  .csrc { padding: 10px 14px; white-space: pre; overflow: hidden; flex: 1; }
+  .t-dark .c-kw { color: #c792ea; } .t-dark .c-str { color: #c3e88d; } .t-dark .c-com { color: #7f848e; } .t-dark .c-fn { color: #82aaff; } .t-dark .c-meta { color: #ffcb6b; }
+  .t-light .c-kw { color: #9c27b0; } .t-light .c-str { color: #2e7d32; } .t-light .c-com { color: #757575; } .t-light .c-fn { color: #1565c0; } .t-light .c-meta { color: #b26a00; }
+  .statusbar { display: flex; align-items: center; gap: 14px; height: 28px; padding: 0 14px; border-top: 1px solid var(--bd); font-size: 12px; color: var(--t2); background: var(--bg2); }
+  .console { border-top: 1px solid var(--bd); }
+  .con-head { display: flex; align-items: center; gap: 8px; height: 34px; padding: 0 14px; font-size: 12px; }
+  .con-row { display: flex; gap: 12px; padding: 3px 14px; font-size: 12.5px; }
+  .lvl { width: 44px; flex: none; font-weight: 600; font-size: 11px; }
+  /* activity */
+  .act-row { display: flex; align-items: center; gap: 10px; padding: 9px 0; font-size: 13px; border-bottom: 1px solid var(--bd); }
+  .act-row:last-child { border-bottom: none; }
+  /* versions */
+  .ver { display: flex; align-items: center; gap: 10px; padding: 10px 14px; font-size: 13px; border-bottom: 1px solid var(--bd); }
+  .ver.sel { background: var(--sel); }
+  .diff { font-size: 12.5px; line-height: 1.6; }
+  .diff div { padding: 0 14px; white-space: pre; }
+  .d-add { background: color-mix(in srgb, var(--ok) 12%, transparent); color: var(--ok); }
+  .d-del { background: color-mix(in srgb, var(--err) 10%, transparent); color: var(--err); }
+  /* mobile */
+  .mhub { width: 380px; height: 640px; display: flex; flex-direction: column; }
+  .mseg { display: flex; margin: 8px 12px; border: 1px solid var(--bd); border-radius: 4px; overflow: hidden; height: 40px; font-size: 13px; }
+  .mseg div { flex: 1; display: flex; align-items: center; justify-content: center; color: var(--t2); }
+  .mseg .on { background: color-mix(in srgb, var(--p) 12%, transparent); color: var(--p); font-weight: 600; }
+  .mtools { margin-top: auto; display: flex; align-items: center; gap: 4px; height: 48px; border-top: 1px solid var(--bd); padding: 0 8px; }
+  .mtools .icon-btn { width: 44px; height: 44px; font-size: 16px; }
+  .sheet { border-radius: 12px 12px 0 0; border-top: 1px solid var(--bd); background: var(--bg1); box-shadow: 0 -6px 18px rgba(0,0,0,.18); }
+  .grip { width: 36px; height: 4px; border-radius: 2px; background: var(--bd); margin: 8px auto 4px; }
+</style>
+</head>
+<body>
+<div class="board-title">Script Hub — Detail Home + Editor</div>
+<div class="board-sub">Per <code>design/SCRIPT_HUB.md</code> · SPEC §7. Every script's home; Monaco is the Code tab. Tabs: Overview · Code · Settings · Activity · Storage · Resources · Versions. Save state always explicit text. <a class="back" href="index.html">← All boards</a></div>
+
+<div class="board">
+
+  <!-- ============ FRAME 1: Overview ============ -->
+  <div class="frame-wrap t-light">
+    <div class="frame-label">1 · Overview tab — the management home (Light)</div>
+    <div class="surface hub">
+      <div class="hub-top">
+        <span class="icon-btn">←</span>
+        <span class="appicon" style="background:#24292f">GD</span>
+        <b>GitHub Dark Mode</b>
+        <span class="sw on"></span>
+        <span class="state st-idle">Idle</span>
+        <span style="flex:1"></span>
+        <span class="savetxt">Saved 12:03</span>
+        <span class="btn btn-pri btn-sm">▶ Run</span>
+        <span class="btn btn-ghost btn-sm">Save</span>
+        <span class="icon-btn">⋮</span>
+      </div>
+      <div class="hub-tabs">
+        <span class="on">Overview</span><span>Code</span><span>Settings</span><span>Activity</span><span>Storage</span><span>Resources</span><span>Versions</span>
+      </div>
+      <div class="ov">
+        <div class="card">
+          <h4>Status</h4>
+          <div style="display:flex;align-items:center;gap:10px;font-size:13px;margin-bottom:8px">
+            <span class="kind">▢ Page script</span> · <span class="state st-idle">Idle — enabled, no matching tab open</span>
+          </div>
+          <div class="attn"><span class="badge b-warn">Update waiting</span><span style="flex:1">v1.5.0 adds <span class="mono">*.bank.com</span></span><span class="btn btn-ghost btn-sm">Review</span></div>
+          <div class="attn"><span class="badge b-warn">Warning</span><span style="flex:1">@require resource failed to refresh</span><span class="btn btn-text btn-sm">Resources</span></div>
+        </div>
+        <div class="card">
+          <h4>Where it runs</h4>
+          <div class="siterow"><span class="favicon" style="background:#24292f"></span><span style="flex:1">github.com</span><span class="sw sm on"></span></div>
+          <div class="siterow"><span class="favicon" style="background:#24292f"></span><span style="flex:1">gist.github.com</span><span class="sw sm on"></span></div>
+          <div class="siterow"><span class="favicon" style="background:#6e40c9"></span><span style="flex:1">*.githubusercontent.com</span><span class="sw sm"></span></div>
+          <div class="t2" style="font-size:12px;padding-top:8px">+ 1 more pattern</div>
+        </div>
+        <div class="card">
+          <h4>Activity — last 7 days</h4>
+          <div style="font-size:13px;line-height:2">
+            Ran <b>41×</b> on 2 sites · longest run 180 ms<br>
+            Network: <b>github.com</b> ×38, <b>api.github.com</b> ×3<br>
+            Storage: <b>1.2 KB</b> in 4 keys
+          </div>
+          <div style="padding-top:6px"><span class="btn btn-text btn-sm" style="padding-left:0">Full activity →</span></div>
+        </div>
+        <div class="card">
+          <h4>Update</h4>
+          <div style="font-size:13px;line-height:2">
+            Source: <span class="mono" style="font-size:12px">greasyfork.org/scripts/418…</span><br>
+            Installed v1.4.2 · checked 2 h ago
+          </div>
+          <div style="padding-top:6px"><span class="btn btn-ghost btn-sm">Check now</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ FRAME 2: Code + console, dark ============ -->
+  <div class="frame-wrap t-dark">
+    <div class="frame-label">2 · Code tab — Monaco, problems strip, docked console (Dark)</div>
+    <div class="surface hub">
+      <div class="hub-top">
+        <span class="icon-btn">←</span>
+        <span class="appicon" style="background:#00a1d6">BE</span>
+        <b>Bilibili Evolved</b>
+        <span class="dirty">●</span>
+        <span class="sw on"></span>
+        <span class="state st-run">Running</span>
+        <span style="flex:1"></span>
+        <span class="savetxt" style="color:var(--warn)">Unsaved changes</span>
+        <span class="btn btn-pri btn-sm">▶ Run</span>
+        <span class="btn btn-ghost btn-sm">Save</span>
+        <span class="icon-btn">⋮</span>
+      </div>
+      <div class="hub-tabs">
+        <span>Overview</span><span class="on">Code</span><span>Settings</span><span>Activity</span><span>Storage</span><span>Resources</span><span>Versions</span>
+      </div>
+      <div class="code">
+        <div class="lnums">1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9<br>10<br>11<br>12<br>13<br>14</div>
+        <div class="csrc"><span class="c-com">// ==UserScript==</span>
+<span class="c-com">// <span class="c-meta">@name</span>         Bilibili Evolved</span>
+<span class="c-com">// <span class="c-meta">@version</span>      2.1.4</span>
+<span class="c-com">// <span class="c-meta">@match</span>        https://www.bilibili.com/*</span>
+<span class="c-com">// <span class="c-meta">@grant</span>        GM_xmlhttpRequest</span>
+<span class="c-com">// <span class="c-meta">@connect</span>      api.bilibili.com</span>
+<span class="c-com">// ==/UserScript==</span>
+
+<span class="c-kw">const</span> player = <span class="c-fn">document.querySelector</span>(<span class="c-str">'.bpx-player'</span>);
+<span class="c-kw">async function</span> <span class="c-fn">loadDanmaku</span>(cid) {
+  <span class="c-kw">const</span> res = <span class="c-kw">await</span> <span class="c-fn">GM_xmlhttpRequest</span>({
+    url: <span class="c-str">`https://api.bilibili.com/x/v1/dm/list.so?oid=${cid}`</span>,
+  });
+}</div>
+      </div>
+      <div class="statusbar">
+        <span style="color:var(--warn)">⚠ 2 problems</span>
+        <span>Ln 14, Col 2</span>
+        <span>UTF-8</span>
+        <span style="flex:1"></span>
+        <span>Run on save <span class="sw sm on" style="vertical-align:middle"></span></span>
+        <span style="color:var(--p)">Console ▴</span>
+      </div>
+      <div class="console">
+        <div class="con-head">
+          <span class="chip sel" style="line-height:18px">All</span><span class="chip" style="line-height:18px">Error</span><span class="chip" style="line-height:18px">Warn</span><span class="chip" style="line-height:18px">Info</span>
+          <span style="flex:1"></span><span class="t2">Clear</span>
+        </div>
+        <div class="con-row mono"><span class="t2">12:03:41</span><span class="lvl" style="color:var(--t2)">INFO</span><span>danmaku loaded: 1 842 entries (124 ms)</span></div>
+        <div class="con-row mono" style="background:color-mix(in srgb,var(--err) 8%,transparent)"><span class="t2">12:03:41</span><span class="lvl" style="color:var(--err)">ERROR</span><span style="color:var(--err)">TypeError: cid is undefined — <u>main.user.js:11</u></span></div>
+        <div class="con-row mono"><span class="t2">12:03:40</span><span class="lvl" style="color:var(--t2)">INFO</span><span>player detected, applying theme</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ FRAME 3: Activity tab ============ -->
+  <div class="frame-wrap t-light">
+    <div class="frame-label">3 · Activity tab — per-script ledger (SPEC §3.3, aggregates only)</div>
+    <div class="surface hub" style="width:760px">
+      <div class="hub-tabs" style="border-top:none">
+        <span>Overview</span><span>Code</span><span>Settings</span><span class="on">Activity</span><span>Storage</span><span>Resources</span><span>Versions</span>
+      </div>
+      <div style="padding:16px;display:flex;flex-direction:column;gap:16px">
+        <div class="card" style="padding:14px 16px">
+          <h4 style="font-size:12px;font-weight:600;color:var(--t2);text-transform:uppercase;margin-bottom:6px">Runs</h4>
+          <div class="act-row"><span class="t2 mono" style="font-size:12px">Today 12:03</span><span style="flex:1">www.bilibili.com · 124 ms</span><span class="badge b-err">Error</span></div>
+          <div class="act-row"><span class="t2 mono" style="font-size:12px">Today 09:48</span><span style="flex:1">www.bilibili.com · 96 ms</span><span class="state st-run">OK</span></div>
+          <div class="act-row"><span class="t2 mono" style="font-size:12px">Jun 10 22:15</span><span style="flex:1">www.bilibili.com — injection failed</span><span class="btn btn-ghost btn-sm">Retry</span></div>
+        </div>
+        <div class="card" style="padding:14px 16px">
+          <h4 style="font-size:12px;font-weight:600;color:var(--t2);text-transform:uppercase;margin-bottom:6px">Network</h4>
+          <div class="act-row"><span class="mono" style="font-size:12px;flex:1">api.bilibili.com</span><span class="t2" style="font-size:12px">×212 this week</span><span class="badge b-ok">Declared</span></div>
+          <div class="act-row"><span class="mono" style="font-size:12px;flex:1">cdn.example-stats.net</span><span class="t2" style="font-size:12px">×3 · blocked Jun 9</span><span class="badge b-warn">Not declared</span><span class="btn btn-ghost btn-sm">Change…</span></div>
+        </div>
+        <div class="card" style="padding:14px 16px">
+          <h4 style="font-size:12px;font-weight:600;color:var(--t2);text-transform:uppercase;margin-bottom:6px">Other</h4>
+          <div class="act-row"><span style="flex:1">Storage</span><span class="t2" style="font-size:12px">4 keys · 1.2 KB</span></div>
+          <div class="act-row"><span style="flex:1">Notifications shown</span><span class="t2" style="font-size:12px">2</span></div>
+          <div class="act-row"><span style="flex:1">Clipboard</span><span class="t2" style="font-size:12px">No access</span></div>
+        </div>
+        <div class="t2" style="font-size:12px">Counts and domains only — never page content or stored values. Activity kept 7 days — change in Settings → Privacy &amp; activity.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ FRAME 4: Versions tab ============ -->
+  <div class="frame-wrap t-light">
+    <div class="frame-label">4 · Versions tab — history + diff + restore (SPEC §3.4)</div>
+    <div class="surface hub" style="width:760px">
+      <div class="hub-tabs" style="border-top:none">
+        <span>Overview</span><span>Code</span><span>Settings</span><span>Activity</span><span>Storage</span><span>Resources</span><span class="on">Versions</span>
+      </div>
+      <div class="ver sel"><span class="badge b-info">Update</span><b>v1.5.0</b><span class="t2" style="font-size:12px">Today 10:12</span><span style="flex:1;color:var(--warn);font-size:12px">+ Runs on *.bank.com</span><span class="t2" style="font-size:12px">current</span></div>
+      <div class="ver"><span class="badge b-ok">Edit</span><b>v1.4.2</b><span class="t2" style="font-size:12px">Jun 8 12:03</span><span class="t2" style="flex:1;font-size:12px">metadata: @connect added api.github.com</span><span class="btn btn-ghost btn-sm">Restore this version</span></div>
+      <div class="ver"><span class="badge b-info">Update</span><b>v1.4.1</b><span class="t2" style="font-size:12px">May 28</span><span style="flex:1"></span><span class="btn btn-ghost btn-sm">Restore this version</span></div>
+      <div class="sep"></div>
+      <div style="padding:10px 14px;font-size:12px;color:var(--t2)">Diff v1.4.2 → v1.5.0</div>
+      <div class="diff mono">
+        <div class="t2">  // @match  https://github.com/*</div>
+        <div class="d-add">+ // @match  https://*.bank.com/*</div>
+        <div class="d-del">− const theme = loadTheme('dark');</div>
+        <div class="d-add">+ const theme = loadTheme(prefs.theme ?? 'dark');</div>
+      </div>
+      <div style="padding:12px 14px" class="t2"><span style="font-size:12px">Restoring creates a new version — nothing is destroyed by rolling back. Last 20 versions / 90 days.</span></div>
+    </div>
+  </div>
+
+  <!-- ============ FRAME 5: Mobile hub ============ -->
+  <div class="frame-wrap t-light">
+    <div class="frame-label">5 · Mobile &lt;600 px — Code tab + console bottom sheet after Run</div>
+    <div class="surface mhub">
+      <div class="hub-top" style="padding:0 12px">
+        <span class="icon-btn">←</span>
+        <b class="ell" style="max-width:140px">Bilibili Evolved</b>
+        <span class="dirty">●</span>
+        <span style="flex:1"></span>
+        <span class="savetxt">Saved ✓</span>
+      </div>
+      <div class="mseg"><div>Overview</div><div class="on">Code</div><div>Activity</div></div>
+      <div class="code" style="flex:1;overflow:hidden">
+        <div class="lnums">1<br>2<br>3<br>4<br>5<br>6</div>
+        <div class="csrc" style="font-size:12.5px"><span class="c-com">// ==UserScript==</span>
+<span class="c-com">// <span class="c-meta">@name</span>  Bilibili Evolved</span>
+<span class="c-com">// ==/UserScript==</span>
+
+<span class="c-kw">const</span> player =
+  <span class="c-fn">document.querySelector</span>(<span class="c-str">'.bpx'</span>);</div>
+      </div>
+      <div class="sheet">
+        <div class="grip"></div>
+        <div style="display:flex;align-items:center;padding:0 14px 6px;font-size:12px;font-weight:600">Console<span style="flex:1"></span><span class="t2">✕</span></div>
+        <div class="con-row mono"><span class="t2">12:03</span><span class="lvl" style="color:var(--t2)">INFO</span><span class="ell">player detected, applying theme</span></div>
+        <div class="con-row mono"><span class="t2">12:03</span><span class="lvl" style="color:var(--err)">ERROR</span><span class="ell" style="color:var(--err)">TypeError: cid is undefined</span></div>
+      </div>
+      <div class="mtools">
+        <span class="btn btn-pri btn-sm" style="height:36px">▶ Run</span>
+        <span class="icon-btn">↶</span><span class="icon-btn">↷</span><span class="icon-btn">🔍</span>
+        <span style="flex:1"></span><span class="icon-btn">⋯</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

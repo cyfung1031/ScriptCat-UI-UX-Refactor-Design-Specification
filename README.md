@@ -19,7 +19,9 @@ Earlier revisions (rev. 1–3) synthesized the best of the reference products; r
 - `SPEC.md`: the main UI/UX design specification (rev. 4) — thesis, model, surfaces, system rules.
 - `design/`: detailed per-page implementation specifications derived from `SPEC.md` (popup/site controller, manager, script hub, install/confirm, import/export/update flows, settings, logs).
 - `references/`: compiled snapshots from related userscript managers, UX analyses of each, and supporting notes for comparison.
-- `draft/`: exploratory visual material. (The 2026-06-10 draft predates rev. 4; it reflects the rev. 3 layouts and is kept as historical exploration.)
+- `draft/`: exploratory visual material.
+  - `draft/html/`: static HTML illustration boards visualizing the rev. 4 specs with realistic dummy data — one board per surface plus a shared token sheet (`sc.css`). Open `draft/html/index.html` in a browser. Boards cover key states (light/dark, selection, errors, escalations, empty/first-run) and follow the spec tokens; they are illustrations, not the implementation.
+  - The 2026-06-10 PNG draft predates rev. 4; it reflects the rev. 3 layouts and is kept as historical exploration.
 
 ## How To Use This Repo
 

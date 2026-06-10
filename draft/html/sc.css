@@ -1,0 +1,166 @@
+/* ScriptCat rev.4 illustration drafts — shared tokens & components
+   Tokens per design/README.md (SPEC §11). Light/dark via .t-light / .t-dark wrappers. */
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: #dfe3ea;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  padding: 32px;
+  color: #1d2129;
+}
+
+/* ---------- board chrome ---------- */
+.board-title { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+.board-sub { font-size: 13px; color: #4e5969; margin-bottom: 24px; max-width: 880px; }
+.board { display: flex; flex-wrap: wrap; gap: 40px; align-items: flex-start; }
+.frame-wrap > .frame-label { font-size: 12px; font-weight: 600; color: #4e5969; margin-bottom: 8px; text-transform: uppercase; letter-spacing: .04em; }
+.board a.back { font-size: 12px; color: #165dff; text-decoration: none; }
+
+/* ---------- themes ---------- */
+.t-light {
+  --p: #165dff; --ok: #00b42a; --warn: #ff7d00; --err: #f53f3f; --kind: #722ed1;
+  --bg1: #ffffff; --bg2: #f7f8fa; --bg3: #f2f3f5;
+  --t1: #1d2129; --t2: #4e5969; --bd: #e5e6eb;
+  --sel: #e8f1ff;
+}
+.t-dark {
+  --p: #3c7eff; --ok: #27c346; --warn: #ff9a2e; --err: #f76560; --kind: #8e51da;
+  --bg1: #17171a; --bg2: #232324; --bg3: #2a2a2b;
+  --t1: #f2f3f5; --t2: #c9cdd4; --bd: #484849;
+  --sel: #1e2c4d;
+}
+
+.surface {
+  background: var(--bg1); color: var(--t1);
+  border: 1px solid var(--bd); border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0,0,0,.10);
+  overflow: hidden;
+}
+.t-dark .surface { box-shadow: 0 4px 16px rgba(0,0,0,.45); }
+
+/* ---------- switch (full radius per SPEC §11.1) ---------- */
+.sw {
+  display: inline-block; flex: none; width: 32px; height: 18px; border-radius: 999px;
+  background: #c9cdd4; position: relative; vertical-align: middle;
+}
+.t-dark .sw { background: #5f5f60; }
+.sw::after {
+  content: ""; position: absolute; top: 2px; left: 2px;
+  width: 14px; height: 14px; border-radius: 50%; background: #fff;
+}
+.sw.on { background: var(--p); }
+.sw.on::after { left: auto; right: 2px; }
+.sw.sm { width: 26px; height: 15px; }
+.sw.sm::after { width: 11px; height: 11px; }
+
+/* ---------- status: one state word OR one attention badge (SPEC §3.2) ---------- */
+.state { font-size: 12px; white-space: nowrap; }
+.st-run { color: var(--ok); font-weight: 500; }
+.st-idle, .st-off { color: var(--t2); }
+.badge {
+  display: inline-block; font-size: 12px; font-weight: 500; line-height: 18px;
+  padding: 0 7px; border-radius: 4px; white-space: nowrap;
+}
+.b-err  { color: var(--err);  background: color-mix(in srgb, var(--err) 14%, transparent); }
+.b-warn { color: var(--warn); background: color-mix(in srgb, var(--warn) 14%, transparent); }
+.b-ok   { color: var(--ok);   background: color-mix(in srgb, var(--ok) 14%, transparent); }
+.b-kind { color: var(--kind); background: color-mix(in srgb, var(--kind) 14%, transparent); }
+.b-info { color: var(--p);    background: color-mix(in srgb, var(--p) 12%, transparent); }
+
+/* kind glyph (Page / Background / Scheduled) */
+.kind { font-size: 11px; color: var(--kind); white-space: nowrap; }
+
+/* ---------- buttons ---------- */
+.btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 13px; font-weight: 500; line-height: 1;
+  padding: 7px 14px; border-radius: 4px; border: 1px solid transparent;
+  cursor: default; white-space: nowrap;
+}
+.btn-pri   { background: var(--p); color: #fff; }
+.btn-ghost { border-color: var(--bd); color: var(--t1); background: var(--bg1); }
+.btn-text  { color: var(--p); padding: 7px 8px; }
+.btn-dgr   { color: var(--err); border-color: color-mix(in srgb, var(--err) 40%, transparent); background: transparent; }
+.btn-sm    { padding: 4px 10px; font-size: 12px; }
+.icon-btn {
+  display: inline-flex; align-items: center; justify-content: center; flex: none;
+  width: 26px; height: 26px; border-radius: 4px; color: var(--t2); font-size: 14px;
+}
+.icon-btn:hover { background: var(--bg3); }
+
+/* ---------- chips (full radius) ---------- */
+.chip {
+  display: inline-block; font-size: 12px; line-height: 22px; padding: 0 11px;
+  border-radius: 999px; border: 1px solid var(--bd); color: var(--t2); white-space: nowrap;
+}
+.chip.sel { background: var(--p); border-color: var(--p); color: #fff; }
+.chip.reset { color: var(--p); border-style: dashed; }
+
+/* ---------- misc shared ---------- */
+.favicon { width: 16px; height: 16px; border-radius: 4px; flex: none; display: inline-block; }
+.appicon {
+  width: 20px; height: 20px; border-radius: 5px; flex: none;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700; color: #fff;
+}
+.mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 13px; }
+.t2 { color: var(--t2); }
+.sep { height: 1px; background: var(--bd); }
+.ell { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* focus ring illustration (SPEC §11.1) */
+.focused { outline: 2px solid var(--p); outline-offset: 2px; border-radius: 4px; }
+
+/* toast */
+.toast {
+  display: inline-flex; align-items: center; gap: 12px;
+  background: #2a2a2b; color: #f2f3f5; font-size: 13px;
+  padding: 10px 16px; border-radius: 8px; box-shadow: 0 6px 20px rgba(0,0,0,.3);
+}
+.toast .undo { color: #6aa1ff; font-weight: 600; }
+
+/* logo */
+.logo {
+  width: 20px; height: 20px; border-radius: 5px; flex: none;
+  background: linear-gradient(135deg, #165dff, #722ed1);
+  display: inline-flex; align-items: center; justify-content: center;
+  color: #fff; font-size: 12px; font-weight: 800;
+}
+
+/* group header (popup / by-site) */
+.ghead {
+  display: flex; align-items: center; gap: 6px;
+  height: 28px; padding: 0 12px;
+  font-size: 12px; font-weight: 600; color: var(--t2);
+  background: var(--bg2);
+}
+.ghead .count { font-weight: 400; }
+
+/* generic row */
+.row { display: flex; align-items: center; gap: 10px; padding: 0 12px; }
+
+/* banner */
+.banner {
+  display: flex; align-items: center; gap: 10px; min-height: 40px; padding: 6px 12px;
+  font-size: 13px;
+}
+.bn-info { background: color-mix(in srgb, var(--p) 9%, var(--bg1)); color: var(--t1); }
+.bn-warn { background: color-mix(in srgb, var(--warn) 12%, var(--bg1)); }
+.bn-neutral { background: var(--bg2); color: var(--t2); }
+
+/* sidebar (manager shell) */
+.sidebar { width: 220px; flex: none; background: var(--bg2); border-right: 1px solid var(--bd); display: flex; flex-direction: column; padding: 12px 8px; }
+.snav { display: flex; align-items: center; gap: 10px; padding: 8px 12px; border-radius: 4px; font-size: 14px; color: var(--t2); position: relative; }
+.snav.active { background: color-mix(in srgb, var(--p) 10%, transparent); color: var(--p); font-weight: 600; }
+.snav.active::before { content: ""; position: absolute; left: 0; top: 6px; bottom: 6px; width: 3px; border-radius: 2px; background: var(--p); }
+.snav .ic { width: 18px; text-align: center; font-size: 14px; }
+
+/* settings / cards */
+.card { border: 1px solid var(--bd); border-radius: 8px; background: var(--bg1); }
+
+/* scrollbar hint */
+.scrollhint { position: relative; }
+.scrollhint::after { content: ""; position: absolute; right: 3px; top: 20%; width: 5px; height: 30%; border-radius: 3px; background: color-mix(in srgb, var(--t2) 35%, transparent); }

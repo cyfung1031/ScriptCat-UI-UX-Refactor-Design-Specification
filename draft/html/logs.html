@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>ScriptCat rev.4 — Logs</title>
+<link rel="stylesheet" href="sc.css">
+<style>
+  .logs { width: 1100px; display: flex; flex-direction: column; }
+  .ltool { display: flex; align-items: center; gap: 8px; padding: 12px 16px; flex-wrap: wrap; }
+  .search { display: flex; align-items: center; gap: 8px; width: 220px; height: 32px; padding: 0 10px; border: 1px solid var(--bd); border-radius: 4px; color: var(--t2); font-size: 13px; }
+  .lrow { display: flex; align-items: center; gap: 14px; height: 32px; padding: 0 16px; font-size: 12.5px; border-bottom: 1px solid var(--bd); }
+  .lrow .time { width: 64px; flex: none; color: var(--t2); }
+  .lrow .lvl { width: 52px; flex: none; }
+  .lrow .scr { width: 150px; flex: none; color: var(--p); }
+  .lrow.err { background: color-mix(in srgb, var(--err) 7%, transparent); }
+  .lrow.sel { background: var(--sel); }
+  .xn { font-size: 11px; border-radius: 999px; background: var(--bg3); color: var(--t2); padding: 0 7px; }
+  .pill { position: absolute; left: 50%; transform: translateX(-50%); }
+  .detail { border-top: 1px solid var(--bd); padding: 12px 16px; background: var(--bg2); }
+  .ctx { display: grid; grid-template-columns: 110px 1fr; gap: 2px 14px; font-size: 12px; margin: 10px 0; }
+  .ctx .k { color: var(--t2); }
+</style>
+</head>
+<body>
+<div class="board-title">Logs — Cross-Script Console</div>
+<div class="board-sub">Per <code>design/LOGS.md</code> · SPEC §9. Filters as removable chips · live tail with scroll-pause pill · collapsed repeats · detail panel with the error→editor path and run-id link into Activity. <a class="back" href="index.html">← All boards</a></div>
+
+<div class="board">
+  <div class="frame-wrap t-dark">
+    <div class="frame-label">Desktop (Dark) — tail paused, error row selected, detail panel open</div>
+    <div class="surface logs" style="position:relative">
+      <div class="ltool">
+        <b style="font-size:16px">Logs</b><span class="t2">(1 248)</span>
+        <div class="search">🔍 Search messages…</div>
+        <span class="sel-chip chip">Script: All ▾</span>
+        <span class="chip sel">Error (12)</span>
+        <span class="chip sel">Warn (96)</span>
+        <span class="chip">Info (1 140)</span>
+        <span class="chip">24 h ▾</span>
+        <span class="chip reset">Reset</span>
+        <span style="flex:1"></span>
+        <span class="btn btn-ghost btn-sm">⏸ Pause tail</span>
+        <span class="btn btn-ghost btn-sm">Export</span>
+        <span class="btn btn-dgr btn-sm">Clear…</span>
+      </div>
+      <div style="position:relative">
+        <div class="lrow mono"><span class="time">12:03:41</span><span class="lvl"><span class="badge b-err">ERROR</span></span><span class="scr ell">AdGuard Extra</span><span class="ell" style="flex:1">TypeError: Cannot read properties of undefined (reading 'querySelector')</span></div>
+        <div class="lrow mono sel err"><span class="time">12:03:41</span><span class="lvl"><span class="badge b-err">ERROR</span></span><span class="scr ell">Bilibili Evolved</span><span class="ell" style="flex:1">TypeError: cid is undefined</span></div>
+        <div class="lrow mono"><span class="time">12:03:40</span><span class="lvl"><span class="badge b-info">INFO</span></span><span class="scr ell">AutoPagerize</span><span class="ell" style="flex:1">page 3 loaded and appended</span><span class="xn">×23</span></div>
+        <div class="lrow mono"><span class="time">12:01:18</span><span class="lvl"><span class="badge b-warn">WARN</span></span><span class="scr ell">RSS Watcher</span><span class="ell" style="flex:1">feed responded 304, skipping parse</span></div>
+        <div class="lrow mono"><span class="time">11:58:02</span><span class="lvl"><span class="badge b-info">INFO</span></span><span class="scr ell">Daily Backup</span><span class="ell" style="flex:1">next run scheduled 02:00</span></div>
+        <div class="pill" style="bottom:8px"><span class="btn btn-pri btn-sm" style="border-radius:999px">Paused — 6 new ↓</span></div>
+      </div>
+      <div class="detail">
+        <div style="display:flex;align-items:center;gap:8px;font-size:13px"><span class="badge b-err">ERROR</span><b>Bilibili Evolved</b><span class="t2" style="font-size:12px">v2.1.4</span><span style="flex:1"></span><span class="t2">✕</span></div>
+        <div class="mono" style="font-size:12.5px;margin-top:8px;color:var(--err)">TypeError: cid is undefined<br><span class="t2">    at loadDanmaku (main.user.js:11:9)<br>    at apply (main.user.js:14:1)</span></div>
+        <div class="ctx">
+          <span class="k">Tab</span><span class="mono" style="font-size:12px">https://www.bilibili.com/video/BV1xx…</span>
+          <span class="k">Run</span><span class="mono" style="font-size:12px">run-8f31 → <span style="color:var(--p)">view in Activity</span></span>
+        </div>
+        <div style="display:flex;gap:8px">
+          <span class="btn btn-pri btn-sm">Open script at line 11</span>
+          <span class="btn btn-ghost btn-sm">Copy</span>
+          <span class="btn btn-ghost btn-sm">Report issue</span>
+        </div>
+      </div>
+      <div class="row" style="height:26px;font-size:11px;color:var(--t2);background:var(--bg2);border-top:1px solid var(--bd)">Logs are kept for 7 days / 10 000 entries — change in Settings → Privacy &amp; activity</div>
+    </div>
+  </div>
+
+  <div class="frame-wrap t-light">
+    <div class="frame-label">Empty state (Light)</div>
+    <div class="surface" style="width:480px;padding:36px 32px;text-align:center">
+      <div style="font-size:28px;margin-bottom:10px">≣</div>
+      <b>Script activity will appear here.</b>
+      <div class="t2" style="font-size:13px;margin-top:6px">Console output and errors from your scripts are collected automatically. <span style="color:var(--p)">What gets logged?</span></div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
