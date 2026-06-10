@@ -6,6 +6,15 @@ Use these files to understand existing userscript-manager products, interaction 
 
 For this refactor, `violentmonkey-2.41.0/` is the stronger UX reference than `tampermonkey-5.5.0/`. Violentmonkey is closer to the kind of clear, compact, task-focused experience we want, while Tampermonkey is still useful for breadth of features and edge cases but is less aligned with the target UI/UX direction.
 
+## UX Analysis Documents
+
+Detailed pros/cons analyses of each snapshot, with DO/DON'T implications mapped to `SPEC.md` (rev. 2) sections:
+
+- `UX_ANALYSIS_SCRIPTCAT_1.3.2.md` — baseline product: what to preserve, what the refactor must fix.
+- `UX_ANALYSIS_TAMPERMONKEY_5.5.0.md` — capability ceiling and scope checklist; cautionary hierarchy lessons.
+- `UX_ANALYSIS_VIOLENTMONKEY_2.41.0.md` — preferred UX temperament; restraint and token-system lessons.
+- `UX_ANALYSIS_COMPARISON.md` — cross-product synthesis, consolidated DO/DON'T tables, open tradeoffs.
+
 ## Included Snapshots
 
 | Directory | Product | Version | Best use |
