@@ -6,7 +6,7 @@ Synthesis of the three per-product analyses:
 - `UX_ANALYSIS_TAMPERMONKEY_5.5.0.md` — capability ceiling / scope checklist
 - `UX_ANALYSIS_VIOLENTMONKEY_2.41.0.md` — preferred UX temperament
 
-All DO/DON'T conclusions here are reflected in `SPEC.md` (rev. 2); section numbers refer to it.
+All DO/DON'T conclusions here were folded into `SPEC.md`; the `SPEC` section numbers below refer to the **rev. 2/3 numbering** under which this analysis was written. `SPEC.md` rev. 4 restructured the document (see its revision note for the mapping) and additionally goes *beyond* every product compared here with concepts none of them have: the activity ledger (rev. 4 §3.3), per-script version history with rollback (§3.4), the site axis with per-site control (§3.1), and the Script Hub (§7). This file remains the evidence base for the floor rev. 4 builds on.
 
 ---
 
