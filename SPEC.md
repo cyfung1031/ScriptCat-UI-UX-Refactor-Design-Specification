@@ -1,6 +1,8 @@
-# ScriptCat UI/UX Refactor Design Specification (rev. 1)
+# ScriptCat UI/UX Refactor Design Specification (rev. 2)
 
-## 1. Purpose
+> rev. 2 adds layout foundations (6), install/update/import flows (13), first-run state (15.3), motion (16), localization (20), toast guidelines (26.6), and measurable accessibility targets (17). Later sections are renumbered accordingly.
+
+# 1. Purpose
 
 This document defines the UI/UX design principles, do's, and don'ts for refactoring ScriptCat, a UserScript manager. The goal is to make ScriptCat feel modern, powerful, and approachable while preserving the efficiency expected by advanced users and script developers.
 
@@ -183,7 +185,7 @@ Primary actions
 ### DO
 
 * Use card-based layouts.
-* Increase touch targets to at least 36–44 px.
+* Make touch targets at least 44 × 44 px.
 * Keep script cards visually scannable.
 * Use clear primary actions such as `Edit`, `Run`, or `More`.
 * Allow horizontal scrolling for filter chips.
@@ -319,9 +321,104 @@ The product should use a restrained and consistent color system.
 
 ---
 
-# 6. Light and Dark Mode
+# 6. Layout Foundations
 
-## 6.1 Light Mode
+All surfaces should be built from a small set of shared layout values so desktop, mobile, popup, and editor feel like one product.
+
+## 6.1 Spacing and Sizing
+
+Recommended baseline values:
+
+```text
+Base spacing unit: 4 px
+Common steps: 4 / 8 / 12 / 16 / 24 / 32 px
+Desktop table row height: 40–48 px
+Mobile card padding: 12–16 px
+Minimum touch target: 44 × 44 px
+Popup width: 360–400 px, fixed
+Popup maximum height: about 600 px, then scroll internally
+```
+
+### DO
+
+* Derive margins and paddings from the base unit.
+* Keep row heights and card paddings consistent within a view.
+* Keep the popup width fixed so content does not reflow when toggling scripts.
+* Let long lists scroll inside the popup instead of growing the popup.
+
+### DON'T
+
+* Do not use arbitrary one-off spacing values.
+* Do not let the popup exceed browser popup size limits and clip content.
+* Do not change row height between filtered and unfiltered states.
+
+---
+
+## 6.2 Typography
+
+```text
+Primary UI text: 13–14 px
+Secondary text: 12 px
+Section titles: 15–16 px
+Code editor and logs: 13–14 px monospace
+Line height: about 1.5 for UI text
+```
+
+### DO
+
+* Use the platform system font stack for UI text.
+* Use a monospace stack only for code, logs, and match patterns.
+* Keep the type scale small; two or three sizes per view is usually enough.
+* Verify legibility with CJK text, which needs slightly more line height.
+
+### DON'T
+
+* Do not use more than one font family for general UI text.
+* Do not use font size alone for hierarchy when weight or color is clearer.
+* Do not use text smaller than 12 px for information users must read.
+
+---
+
+## 6.3 Shape and Elevation
+
+### DO
+
+* Use one corner radius for cards and dialogs and one smaller radius for buttons, inputs, and badges.
+* Use full radius only for chips, switches, and avatars.
+* Limit elevation to two levels: floating elements such as menus and toasts, and modal dialogs.
+* Prefer borders over shadows for separation in dark mode.
+
+### DON'T
+
+* Do not mix many different corner radii in one view.
+* Do not stack heavy shadows, especially in dark mode.
+
+---
+
+## 6.4 Responsive Breakpoints
+
+```text
+Below 600 px: mobile layout, cards, bottom navigation
+600–900 px: condensed layout, fewer columns or card grid
+Above 900 px: full desktop layout with sidebar and table
+```
+
+### DO
+
+* Choose layout by available width, and size hit areas by input type when detectable.
+* Keep terminology, ordering, and the status system identical across breakpoints.
+* Test the manager page in narrow browser windows, not only full screen.
+
+### DON'T
+
+* Do not switch between desktop and mobile interaction models at different widths on different pages.
+* Do not hide essential actions at intermediate widths.
+
+---
+
+# 7. Light and Dark Mode
+
+## 7.1 Light Mode
 
 Light mode should feel clean, spacious, and readable.
 
@@ -341,7 +438,7 @@ Light mode should feel clean, spacious, and readable.
 
 ---
 
-## 6.2 Dark Mode
+## 7.2 Dark Mode
 
 Dark mode should feel professional and comfortable for long usage.
 
@@ -362,9 +459,9 @@ Dark mode should feel professional and comfortable for long usage.
 
 ---
 
-# 7. Navigation
+# 8. Navigation
 
-## 7.1 Sidebar
+## 8.1 Sidebar
 
 The sidebar should be stable and predictable.
 
@@ -383,7 +480,7 @@ The sidebar should be stable and predictable.
 
 ---
 
-## 7.2 Dropdown Menus
+## 8.2 Dropdown Menus
 
 Dropdown menus should be grouped by intent.
 
@@ -422,7 +519,7 @@ Help
 
 ---
 
-# 8. Search and Filtering
+# 9. Search and Filtering
 
 Search and filtering are critical for users with many scripts.
 
@@ -444,7 +541,7 @@ Search and filtering are critical for users with many scripts.
 
 ---
 
-# 9. Batch Actions
+# 10. Batch Actions
 
 Batch actions are useful but should be contextual.
 
@@ -473,9 +570,9 @@ Batch actions are useful but should be contextual.
 
 ---
 
-# 10. Script Item Design
+# 11. Script Item Design
 
-## 10.1 Desktop Row
+## 11.1 Desktop Row
 
 Recommended script row content:
 
@@ -509,7 +606,7 @@ More menu
 
 ---
 
-## 10.2 Mobile Card
+## 11.2 Mobile Card
 
 Recommended mobile card content:
 
@@ -546,11 +643,11 @@ Footer
 
 ---
 
-# 11. Editor UX
+# 12. Editor UX
 
 The script editor is for power users and developers. It should feel efficient and reliable.
 
-## 11.1 Editor Layout
+## 12.1 Editor Layout
 
 Recommended sections:
 
@@ -599,7 +696,76 @@ Bottom / Side Actions
 
 ---
 
-# 12. Runtime Feedback and Error Handling
+# 13. Script Install, Update, and Import Flows
+
+Installing a script is a trust decision. The confirmation surfaces must explain what a script can do before the user commits.
+
+## 13.1 Install Confirmation
+
+When a user installs a script from a URL or file, the confirmation page should present, in order:
+
+```text
+Script name and version
+Author and source origin
+Where it runs (match patterns in plain language)
+Requested permissions and special APIs
+Warnings, if any
+Code preview
+Install / Cancel
+```
+
+### DO
+
+* Summarize match patterns in plain language, such as `Runs on all websites` or `Runs on github.com`.
+* Highlight broad scopes and powerful permissions before showing code.
+* Make `Install` the primary action and keep `Cancel` visible without scrolling.
+* Show the source origin so users can recognize unfamiliar hosts.
+* Keep the code preview available but secondary, with syntax highlighting.
+
+### DON'T
+
+* Do not auto-install scripts without a confirmation step.
+* Do not present raw code as the only information about what a script does.
+* Do not hide the requested scope behind a details toggle.
+* Do not use alarming language for normal, narrow-scope scripts.
+
+---
+
+## 13.2 Update Confirmation
+
+### DO
+
+* Show old and new version numbers.
+* Highlight changes to match patterns, permissions, and connected domains, because these are scope escalations.
+* Provide a code diff for users who want to inspect changes.
+* Show clear progress and a result summary for batch updates.
+
+### DON'T
+
+* Do not bury permission or scope escalation inside a long code diff.
+* Do not silently apply updates that expand where a script runs unless the user has explicitly opted in.
+* Do not block the rest of the UI while checking many scripts for updates.
+
+---
+
+## 13.3 Import and Export
+
+### DO
+
+* Show a preview list of scripts contained in an import before applying it.
+* Let users resolve conflicts with existing scripts, such as skip or overwrite.
+* Show progress and a final summary: imported, skipped, failed.
+* Let users choose what to include in an export.
+
+### DON'T
+
+* Do not import silently over existing scripts.
+* Do not report success when some items failed.
+* Do not make export hard to discover for users who want backups, even though it is a low-frequency action.
+
+---
+
+# 14. Runtime Feedback and Error Handling
 
 ScriptCat should communicate runtime problems clearly.
 
@@ -626,11 +792,11 @@ ScriptCat should communicate runtime problems clearly.
 
 ---
 
-# 13. Empty, Loading, and Edge States
+# 15. Empty, Loading, and Edge States
 
 The UI must handle non-ideal states gracefully.
 
-## 13.1 Required Empty States
+## 15.1 Required Empty States
 
 Design empty states for:
 
@@ -660,7 +826,7 @@ Design empty states for:
 
 ---
 
-## 13.2 Loading States
+## 15.2 Loading States
 
 ### DO
 
@@ -677,15 +843,56 @@ Design empty states for:
 
 ---
 
-# 14. Accessibility
+## 15.3 First-Run Experience
+
+### DO
+
+* Treat the first launch as a designed state, not just an empty list.
+* Offer the two most useful starting actions: get an existing script and create a new script.
+* Link to documentation for users who want to write scripts.
+
+### DON'T
+
+* Do not show a multi-step onboarding wizard.
+* Do not ask for optional permissions or sync configuration before the user has a reason to care.
+
+---
+
+# 16. Motion and Animation
+
+Motion should make state changes easier to follow, never slower.
+
+```text
+Micro interactions (switch, hover, press): 100–150 ms
+Menus, popovers, collapsible sections: 150–250 ms
+Dialogs and page transitions: 200–300 ms maximum
+```
+
+### DO
+
+* Use ease-out for entering elements and ease-in for exiting elements.
+* Animate the property that explains the change, such as a section expanding.
+* Respect `prefers-reduced-motion` by replacing movement with simple fades.
+* Keep skeleton loading animation subtle.
+
+### DON'T
+
+* Do not block input while an animation plays.
+* Do not animate large lists item by item.
+* Do not add decorative motion that carries no meaning.
+* Do not animate the popup opening; it should feel instant.
+
+---
+
+# 17. Accessibility
 
 ScriptCat should be usable by keyboard, screen readers, and users with color vision differences.
 
 ### DO
 
-* Use sufficient color contrast.
+* Meet WCAG 2.1 AA contrast: at least 4.5:1 for normal text, 3:1 for large text, icons, and component boundaries.
 * Provide keyboard navigation for all major actions.
-* Use visible focus states.
+* Use visible focus states with at least 3:1 contrast against adjacent colors.
 * Provide accessible names for icon buttons.
 * Avoid using color alone for status.
 * Ensure switches have clear on/off labels in accessibility metadata.
@@ -700,9 +907,9 @@ ScriptCat should be usable by keyboard, screen readers, and users with color vis
 
 ---
 
-# 15. Interaction Design
+# 18. Interaction Design
 
-## 15.1 Primary Actions
+## 18.1 Primary Actions
 
 Primary actions should be obvious.
 
@@ -731,7 +938,7 @@ Examples:
 
 ---
 
-## 15.2 Destructive Actions
+## 18.2 Destructive Actions
 
 Destructive actions include:
 
@@ -758,7 +965,7 @@ Destructive actions include:
 
 ---
 
-# 16. Content and Terminology
+# 19. Content and Terminology
 
 ScriptCat should use clear, consistent product language.
 
@@ -790,9 +997,30 @@ ScriptCat should use clear, consistent product language.
 
 ---
 
-# 17. Popup-Specific Requirements
+# 20. Localization
 
-## 17.1 Popup Default View
+ScriptCat serves a multilingual audience. Layouts must survive translation.
+
+### DO
+
+* Design layouts to tolerate 30–50% text expansion between languages.
+* Keep status badges, buttons, and menu labels translatable, including pluralized counts.
+* Use locale-aware date, time, and number formatting.
+* Verify both CJK and Latin rendering on every surface, including the editor UI.
+* Keep translated terminology consistent with the terms defined in this specification.
+
+### DON'T
+
+* Do not concatenate sentence fragments in code to build messages.
+* Do not fix button or column widths to the length of one language.
+* Do not embed text in images or icons.
+* Do not truncate translated labels without a tooltip showing the full text.
+
+---
+
+# 21. Popup-Specific Requirements
+
+## 21.1 Popup Default View
 
 The popup default view should prioritize current-page context.
 
@@ -814,7 +1042,7 @@ The popup default view should prioritize current-page context.
 
 ---
 
-## 17.2 Popup Many-Scripts State
+## 21.2 Popup Many-Scripts State
 
 When many scripts exist, the popup must remain usable.
 
@@ -834,7 +1062,7 @@ When many scripts exist, the popup must remain usable.
 
 ---
 
-# 18. Desktop-Specific Requirements
+# 22. Desktop-Specific Requirements
 
 ### DO
 
@@ -854,7 +1082,7 @@ When many scripts exist, the popup must remain usable.
 
 ---
 
-# 19. Mobile-Specific Requirements
+# 23. Mobile-Specific Requirements
 
 ### DO
 
@@ -875,7 +1103,7 @@ When many scripts exist, the popup must remain usable.
 
 ---
 
-# 20. Developer Experience Requirements
+# 24. Developer Experience Requirements
 
 ScriptCat should feel powerful for script authors.
 
@@ -899,9 +1127,9 @@ ScriptCat should feel powerful for script authors.
 
 ---
 
-# 21. Recommended UI Priority Matrix
+# 25. Recommended UI Priority Matrix
 
-## 21.1 High Priority
+## 25.1 High Priority
 
 These must be very visible:
 
@@ -914,7 +1142,7 @@ These must be very visible:
 * Edit script
 * Run script
 
-## 21.2 Medium Priority
+## 25.2 Medium Priority
 
 These should be accessible but not dominant:
 
@@ -927,7 +1155,7 @@ These should be accessible but not dominant:
 * Subscription source
 * Script type
 
-## 21.3 Low Priority
+## 25.3 Low Priority
 
 These should be hidden behind details or menus:
 
@@ -941,9 +1169,9 @@ These should be hidden behind details or menus:
 
 ---
 
-# 22. Component Guidelines
+# 26. Component Guidelines
 
-## 22.1 Switches
+## 26.1 Switches
 
 ### DO
 
@@ -959,7 +1187,7 @@ These should be hidden behind details or menus:
 
 ---
 
-## 22.2 Badges
+## 26.2 Badges
 
 ### DO
 
@@ -976,7 +1204,7 @@ These should be hidden behind details or menus:
 
 ---
 
-## 22.3 Icon Buttons
+## 26.3 Icon Buttons
 
 ### DO
 
@@ -993,7 +1221,7 @@ These should be hidden behind details or menus:
 
 ---
 
-## 22.4 Tables
+## 26.4 Tables
 
 ### DO
 
@@ -1011,7 +1239,7 @@ These should be hidden behind details or menus:
 
 ---
 
-## 22.5 Cards
+## 26.5 Cards
 
 ### DO
 
@@ -1028,7 +1256,25 @@ These should be hidden behind details or menus:
 
 ---
 
-# 23. Recommended Refactor Priorities
+## 26.6 Toasts and Notifications
+
+### DO
+
+* Use toasts to confirm lightweight successful actions.
+* Keep one consistent toast position per platform, away from primary actions.
+* Auto-dismiss success toasts after a few seconds.
+* Include an undo action in the toast when the action is reversible, such as delete.
+* Keep error notifications visible until acknowledged when action is required.
+
+### DON'T
+
+* Do not stack many toasts at once.
+* Do not use toasts as the only record of an important failure.
+* Do not cover the bottom navigation or batch toolbar with toasts.
+
+---
+
+# 27. Recommended Refactor Priorities
 
 ## Priority 1: Popup Information Hierarchy
 
@@ -1106,7 +1352,20 @@ Improve mobile usability.
 
 ---
 
-# 24. Final Design Principles
+## Priority 6: Install and Update Confirmation
+
+Make installing and updating scripts an informed decision.
+
+### Key Changes
+
+* Summarize where a script runs in plain language.
+* Highlight permission and scope escalations during updates.
+* Keep the code preview available but secondary.
+* Add result summaries to batch update and import.
+
+---
+
+# 28. Final Design Principles
 
 ScriptCat should be:
 
@@ -1136,7 +1395,7 @@ Errors, save states, sync states, and runtime states should be visible and actio
 
 ---
 
-# 25. Summary: DO and DON'T
+# 29. Summary: DO and DON'T
 
 ## DO
 
@@ -1150,6 +1409,8 @@ Errors, save states, sync states, and runtime states should be visible and actio
 * Make touch targets large enough.
 * Use clear labels and tooltips.
 * Design for regular users first, then progressively reveal advanced features.
+* Explain where a script runs and what it can access before install and update.
+* Build all surfaces from a small shared system of spacing, type, radius, and motion values.
 
 ## DON'T
 
@@ -1163,3 +1424,5 @@ Errors, save states, sync states, and runtime states should be visible and actio
 * Do not make important actions icon-only.
 * Do not use inconsistent terminology.
 * Do not make users guess what state a script is in.
+* Do not apply updates that expand a script's scope without user review.
+* Do not let translated text break layouts or truncate without recourse.
