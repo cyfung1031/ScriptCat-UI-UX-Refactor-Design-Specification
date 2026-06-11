@@ -20,29 +20,33 @@ HTML illustration boards for every surface live in `../draft/html/` (open `index
 
 ## Shared Foundations
 
-All pages use the same tokens. ScriptCat is built on Arco Design; semantic tokens map onto Arco palette variables so implementation is a theme configuration, not a fork (see `references/UX_ANALYSIS_SCRIPTCAT_1.3.2.md` §1).
+All pages use the same tokens. The visual identity is **ScriptCat's own design system** — source of truth: `visual/scriptcat.pen`, rendered references in `visual/export/` — built around the ScriptCat brand blue and quiet neutral surfaces. Tokens are plain CSS custom properties. The design assumes **no third-party UI framework**: whatever component stack implements these pages must consume the tokens below, never impose its own palette, radii, or component anatomy.
 
-### Color tokens (SPEC §11.2–11.3)
+### Color tokens (SPEC §11.2–11.3 · canonical values: `visual/scriptcat.pen`)
 
 | Token | Light | Dark | Use |
 | --- | --- | --- | --- |
-| `--sc-primary` | `#165DFF` (arcoblue-6) | `#3C7EFF` | Primary actions, selection, active nav |
-| `--sc-success` | `#00B42A` (green-6) | `#27C346` | Running, healthy |
-| `--sc-warning` | `#FF7D00` (orange-6) | `#FF9A2E` | Warning, pending, update waiting |
-| `--sc-danger` | `#F53F3F` (red-6) | `#F76560` | Error, destructive |
-| `--sc-kind` | `#722ED1` (purple-6) | `#8E51DA` | Background / Scheduled kind accent |
-| `--sc-bg-1/2/3` | white → gray layers | `#17171A` base, never pure black | Surface layers |
-| `--sc-text-1` | `gray-10` | ≥ 4.5:1 on `--sc-bg-1` | Primary text |
-| `--sc-text-2` | `gray-8` | ≥ 4.5:1 — dark mode secondary text must not drop below AA (SPEC §11.3, §15) | Secondary text |
-| `--sc-border` | `gray-3` | `gray-7` equivalent; borders carry separation in dark mode | Dividers |
+| `--sc-primary` | `#1296DB` (brand blue) | `#3AACEF` | Primary actions, selection, active nav |
+| `--sc-primary-hover` | `#0A7DB8` | — | Hover/pressed on primary controls |
+| `--sc-primary-tint` | `#D6ECFA` | `#1E3040` | Selection background, active-nav tint; row-hover wash `#EDF5FC` / `#162430` |
+| `--sc-success` | `#34C759` | same · tint `#1E3520` | Running, healthy; labeled Background kind chip |
+| `--sc-warning` | `#FF9500` | same · tint `#352C1E` | Warning, pending, update waiting; labeled Scheduled kind chip |
+| `--sc-danger` | `#E7000B` | `#FF6669` | Error, destructive |
+| `--sc-bg-1` | `#FAFAFA` | `#1E1E1E` | App background — never pure black |
+| `--sc-bg-2` | `#FFFFFF` (card & sidebar) | `#151515` card · `#1A1A1A` sidebar | Cards, panels, sidebar |
+| `--sc-bg-3` | `#F0F0F0` | `#282828` | Inputs, muted fills |
+| `--sc-text-1` | `#1A1A1A` | `#E5E5E5` | Primary text |
+| `--sc-text-2` | `#666666` | `#B5B5B5` — dark-mode secondary text must not drop below AA ≥ 4.5:1 (SPEC §11.3, §15) | Secondary text |
+| `--sc-text-3` | `#888888` | `#8A8A8A` | Muted text, placeholders |
+| `--sc-border` | `#E5E5E5` light · `#D0D0D0` strong | `#2A2A2A` · hover `#3A3A3A`; borders carry separation in dark mode | Dividers, input borders |
 
-Status colors are never used without a text label; lists render one switch, one state word, at most one attention badge (SPEC §3.2).
+Kind (Page · Background · Scheduled) has **no dedicated hue**: it renders as a small glyph plus a labeled tint chip — green tint for Background, orange tint for Scheduled. Status colors are never used without a text label; lists render one switch, one state word, at most one attention badge (SPEC §3.2).
 
 ### Layout tokens (SPEC §11.1)
 
 ```text
 Spacing steps: 4 / 8 / 12 / 16 / 24 / 32 px
-Radius: 8 px cards & dialogs · 4 px buttons, inputs, badges · full for chips & switches
+Radius: 6 px buttons, inputs, badges (sm) · 8 px controls & small cards (md) · 12 px cards & dialogs (lg) · full for chips & switches
 Type: 14 px primary · 12 px secondary · 16 px page titles · 13 px monospace (code, logs, patterns)
 Touch target: ≥ 44 × 44 px on touch surfaces
 Focus ring: 2 px, --sc-primary, 2 px offset, ≥ 3:1 against adjacent colors — never removed

@@ -391,8 +391,8 @@ Items save instantly with inline `Saved ✓`; helper text states when a change n
 ## 11.1 Tokens
 
 ```text
-Spacing: 4 px base — steps 4 / 8 / 12 / 16 / 24 / 32
-Radius: 8 px cards & dialogs · 4 px buttons, inputs, badges · full for chips & switches
+Spacing: 4 px base — steps 4 / 8 / 12 / 16 / 24 / 32 (xs–2xl)
+Radius: 6 px buttons, inputs, badges (sm) · 8 px controls & small cards (md) · 12 px cards & dialogs (lg) · full for chips & switches
 Type: 14 px primary · 12 px secondary · 16 px page titles · 13 px monospace (code, logs, patterns)
        system font stack for UI; monospace only for code/logs/patterns; line-height ~1.5 (more for CJK)
 Elevation: two levels only (floating, modal); borders over shadows in dark mode
@@ -417,14 +417,15 @@ Focus ring: 2 px, primary color, 2 px offset, ≥ 3:1 contrast — never removed
 
 | Color | Usage |
 | --- | --- |
-| Blue | Primary action, selection, active navigation |
-| Green | Running, healthy |
-| Orange | Warning, pending, update waiting |
+| Brand blue (`#1296DB`) | Primary action, selection, active navigation — ScriptCat's own identity color |
+| Green (`#34C759`) | Running, healthy; the labeled Background kind chip |
+| Orange (`#FF9500`) | Warning, pending, update waiting; the labeled Scheduled kind chip |
 | Red | Error, destructive |
 | Gray | Off, idle-muted, secondary information |
-| Purple | Background/Scheduled kind accent (optional) |
 
-Red only for errors/destruction; green only for healthy/running; color never carries meaning without a text label (§3.2, §15).
+Kind has no dedicated hue: Background and Scheduled render as **labeled tint chips** (green / orange) and small glyphs — the text, never the color, carries the meaning. Red is reserved for errors and destruction. Color never carries meaning without a text label (§3.2, §15).
+
+The canonical palette is ScriptCat's own design system — source of truth `visual/scriptcat.pen`, rendered references in `visual/export/`. It is not inherited from, and must not be constrained by, any third-party UI framework or component-library palette.
 
 ## 11.3 Light and Dark
 
